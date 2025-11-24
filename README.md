@@ -11,18 +11,26 @@ Here are the technologies/frameworks we will use for development and execution:
 - python as programming language
 - [CrewAI](https://www.crewai.com/?utm_source=ibm_developer&utm_content=in_content_link&utm_id=tutorials_awb-build-agentic-rag-system-granite) as the agentic framework
 - [Open WebUI](https://docs.openwebui.com/category/-web-search?utm_source=ibm_developer&utm_content=in_content_link&utm_id=tutorials_awb-build-agentic-rag-system-granite) as a local workbench to load and what with the agents
-- an optional Web Search engine in Open WebUI, thanks to Open WebUI you can configure the engine of your choice (Tavily, SearXNG,  )
-- Granite 4 and llama models running on watsonx.ai on IBM cloud
+- **optional** use [Ollama](https://ollama.com/) locally to run the small and powerful Granite 4 H Tiny model!
+- **optional** use a Web Search engine in Open WebUI, thanks to Open WebUI you can configure the engine of your choice (Tavily, SearXNG,  )
+- Granite 4 and llama vision models running on watsonx.ai on IBM cloud
 
 ## Why Granite 4 for these agents?
 
 Granite 4 introduces a **hybrid Mamba-2/Transformer** architecture (with MoE variants) that targets **lower memory use and faster inference**, making it a strong fit for agentic RAG and function-calling workflows. It uses **>70% lower memory** and **~2× faster inference** vs. comparable models, which helps these agents run locally or on modest GPUs with lower cost and latency. Models are **Apache-2.0 licensed**, **ISO 42001 certified**, and cryptographically signed for governance and security. 
 
-**Tiny-H (7B total / ~1B active)** is optimized for **low-latency, small-footprint deployments**—ideal for the Image Researcher’s quick tool calls and orchestration steps. The family emphasizes **instruction following, tool calling, RAG, JSON output, multilingual dialog, and code (incl. FIM)**, aligning with both agents’ needs.
+ The **Granite 4** family emphasizes **instruction following, tool calling, RAG, JSON output, multilingual dialog, and code (incl. FIM)**, aligning with both agents’ needs.
 
+**H-Small (32B total / ~9B active)**  is a 32B parameter long-context instruct model finetuned from Granite-4.0-H-Small-Base. This model is developed using a diverse set of techniques with a structured chat format, including supervised finetuning, model alignment using reinforcement learning, and model merging. **Granite 4.0 instruct** models feature improved instruction following (IF) and tool-calling capabilities, **making them more effective in enterprise applications**.
+> You will have the option to use this model running on IBM Cloud.
+
+**H-Tiny (7B total / ~1B active)** is optimized for **low-latency, small-footprint deployments**—ideal for the Image Researcher’s quick tool calls and orchestration steps.
+> You will have the option to use this model running locally with ollama
+
+**H-Micro (3B total)** a dense hybrid model with 3B parameters.
+
+**Micro (3B total)**  a dense model with a conventional attention-driven transformer architecture, to accommodate platforms and communities that do not yet support hybrid architectures.
 ---
-
-
 
 
 # 🔑 Prepare your environment
@@ -40,7 +48,23 @@ pip install open-webui
 open-webui serve
 ```
 
-## **3. Optional: Set Up Web Search in Open WebUI**
+## **3. Optional: Set Up Ollama**
+
+> If you don't want to setup ollama or you don't have a performant network to download several Gb we recommand to skip these step and use Granite models from watsonx.ai on IBM Cloud with the api key that will be shared with you (only available for current day). Micro model is about ~8Gb and H-Tiny is about ~15Gb.
+
+Go to [ollama.com](https://ollama.com/) and hit Download!
+
+Once installed, pull the Granite 4 Micro model for the Granite Retrieval Agent
+```
+ollama pull ibm/granite4:latest
+```
+
+Pull the Granite 4 Tiny model for the Image Researcher
+```
+ollama pull ibm/granite4:tiny-h
+```
+
+## **4. Optional: Set Up Web Search in Open WebUI**
 
 * **Flexible Web Search**: Agents use the Open WebUI search API, integrating the search engine of your choice by following the  [Configuration guide](https://docs.openwebui.com/category/web-search).
  
