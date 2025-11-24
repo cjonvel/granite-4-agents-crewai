@@ -20,7 +20,7 @@ Our Granite Retrieval Agent relies on a modular architecture in which each agent
 
 In this agentic AI architecture, the agents work together sequentially to achieve the goal. Here is how the generative AI system is organized:
 
-![system_schema](g1.png>)
+![system_schema](images/g1.png>)
 
 
 
@@ -53,7 +53,7 @@ For beginners, it can be difficult to build an agentic AI application from scrat
 
 The following architecture diagram illustrates how the Granite Retrieval Agent integrates multiple tools for agentic RAG.
  
-![alt text](g2-bis.png)
+![alt text](images/g2-bis.png)
 
 
 
