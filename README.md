@@ -21,15 +21,16 @@ Granite 4 introduces a **hybrid Mamba-2/Transformer** architecture (with MoE var
 
  The **Granite 4** family emphasizes **instruction following, tool calling, RAG, JSON output, multilingual dialog, and code (incl. FIM)**, aligning with both agents’ needs.
 
-**H-Small (32B total / ~9B active)**  is a 32B parameter long-context instruct model finetuned from Granite-4.0-H-Small-Base. This model is developed using a diverse set of techniques with a structured chat format, including supervised finetuning, model alignment using reinforcement learning, and model merging. **Granite 4.0 instruct** models feature improved instruction following (IF) and tool-calling capabilities, **making them more effective in enterprise applications**.
-> You will have the option to use this model running on IBM Cloud.
+- **H-Small (32B total / ~9B active)**  is a 32B parameter long-context instruct model finetuned from Granite-4.0-H-Small-Base. This model is developed using a diverse set of techniques with a structured chat format, including supervised finetuning, model alignment using reinforcement learning, and model merging. **Granite 4.0 instruct** models feature improved instruction following (IF) and tool-calling capabilities, **making them more effective in enterprise applications**.
+  > You will have the option to use this model running on IBM Cloud.
 
-**H-Tiny (7B total / ~1B active)** is optimized for **low-latency, small-footprint deployments**—ideal for the Image Researcher’s quick tool calls and orchestration steps.
-> You will have the option to use this model running locally with ollama
+- **H-Tiny (7B total / ~1B active)** is optimized for **low-latency, small-footprint deployments**—ideal for the Image Researcher’s quick tool calls and orchestration steps.
+  > You will have the option to use this model running locally with ollama
 
-**H-Micro (3B total)** a dense hybrid model with 3B parameters.
+- **H-Micro (3B total)** a dense hybrid model with 3B parameters.
 
-**Micro (3B total)**  a dense model with a conventional attention-driven transformer architecture, to accommodate platforms and communities that do not yet support hybrid architectures.
+- **Micro (3B total)**  a dense model with a conventional attention-driven transformer architecture, to accommodate platforms and communities that do not yet support hybrid architectures.
+  > You will have the option to use this model running locally with ollama
 ---
 
 
