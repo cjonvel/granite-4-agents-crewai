@@ -83,13 +83,3 @@ Here are the links for each agent tutorial, you can run in any order you want. U
 
 ---
 
-
-
-
-## **6. Configure Web Search in Open WebUI**
-
-To set up a search provider (e.g., SearXNG), follow [this guide](https://docs.openwebui.com/tutorials/web-search/searxng#4-gui-configuration).
-
----
-
- 
