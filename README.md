@@ -87,7 +87,7 @@ For this lab, we have created an account on IBM Cloud so you can use LLM hosted 
 
 ![model gateway text](./images/model-gateway.png)
 
-### Test the model gateway with Granite 4 H Small##
+### Test the model gateway with Granite 4 H Small
 Before using it in the lab, double check that it is working fine and that the provided api key is working. 
 
 Export your key:
