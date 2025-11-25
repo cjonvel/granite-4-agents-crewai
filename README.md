@@ -89,13 +89,14 @@ SearXNG is a metasearch engine that aggregates retrieved information from multip
 
 For more in-depth instructions on how to run Searxng, refer to the Open WebUI Documentation, detailing integration with Searxng. Here is a quick walk-through:
 
-    Create configuration files for Searxng.
+1. Create configuration files for Searxng.
+```
+mkdir ~/searxng
+cd ~/searxng
+```
 
-    mkdir ~/searxng
-     cd ~/searxng
-
-Create a new file in the ~/searxng directory called settings.yml and copy this code into the file.
-
+1. Create a new file in the ~/searxng directory called settings.yml and copy this code into the file.
+```
 # see https://docs.searxng.org/admin/settings/settings.html#settings-use-default-settings
  use_default_settings: true
 
@@ -116,14 +117,15 @@ Create a new file in the ~/searxng directory called settings.yml and copy this c
  formats:
      - html
      - json
+```
 
-Create a new file in the ~/searxng directory called uwsgi.ini. You can populate it with the values from the example uwsgi.ini from Searxng Github.
+1. Create a new file in the ~/searxng directory called uwsgi.ini. You can populate it with the values from the example uwsgi.ini from Searxng Github.
 
-Run the SearXNG docker image in your terminal.
-
+1. Run the SearXNG docker image in your terminal.
+```
 docker pull searxng/searxng
  docker run -d --name searxng -p 8888:8080 -v ~/searxng:/etc/searxng --restart     always searxng/searxng:latest
-
+```
 Note: SearXNG and Open WebUI both run on port 8080, so we can map SearXNG to the local machine port 8888.
 
 This agent uses the SearXNG API directly, so you do not need to follow the steps in the Open WebUI documentation to setup SearXNG in the UI of Open WebUI. It is only necessary if you want to use SearXNG via the Open WebUI interface apart from this agent.
