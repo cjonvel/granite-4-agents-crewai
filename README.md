@@ -40,7 +40,18 @@ Granite 4 introduces a **hybrid Mamba-2/Transformer** architecture (with MoE var
 
 ## **1. Set up your python environment**                    
 
-You need to have a python environment ready and an IDE to work easily!
+This lab has been tested with python 3.11, also this is recommended to use an IDE like Visual Studio Code but this is not mandatory.
+
+If you already have a 3.11 python environment, you can create a new virtual environment with [venv](https://docs.python.org/3/library/venv.html).
+```
+python -m venv /path/to/new/virtual/environment
+source /path/to/new/virtual/environment/bin/activate
+```
+
+If you have a different python version, either update it or manage multiple python versions with  [uv](https://docs.astral.sh/uv/concepts/python-versions/#python-version-files) or pyenv.
+```
+uv venv --python 3.11.6
+```
 
 ## **2. Install Open WebUI**
 
@@ -67,9 +78,55 @@ ollama pull ibm/granite4:tiny-h
 
 ## **4. Optional: Set Up Web Search in Open WebUI**
 
-* **Flexible Web Search**: Agents use the Open WebUI search API, integrating the search engine of your choice by following the  [Configuration guide](https://docs.openwebui.com/category/web-search).
+* **Flexible Web Search**: Agents use the Open WebUI search API, integrating the search engine of your choice by following the  [Configuration guide](https://docs.openwebui.com/category/web-search). As an example, you can easily create a account on [tavily](https://app.tavily.com/home) with a GitHub or Google account and use tavily api key in Open Web UI, but please not you are limited in number of calls.
+I
+If you want to use SearXNG as the engine, proceed to the following section.
  
  
+## **5.  Optional: Setup SearXNG for Web Search**
+
+SearXNG is a metasearch engine that aggregates retrieved information from multiple search engines. The reason for its inclusion in this architecture is that it requires no SaaS API key, as it can run directly on your laptop.
+
+For more in-depth instructions on how to run Searxng, refer to the Open WebUI Documentation, detailing integration with Searxng. Here is a quick walk-through:
+
+    Create configuration files for Searxng.
+
+    mkdir ~/searxng
+     cd ~/searxng
+
+Create a new file in the ~/searxng directory called settings.yml and copy this code into the file.
+
+# see https://docs.searxng.org/admin/settings/settings.html#settings-use-default-settings
+ use_default_settings: true
+
+ server:
+   secret_key: "ultrasecretkey"  # change this!
+   limiter: false
+   image_proxy: true
+   port: 8080
+   bind_address: "0.0.0.0"
+
+ ui:
+   static_use_hash: true
+
+ search:
+   safe_search: 0
+   autocomplete: ""
+   default_lang: ""
+ formats:
+     - html
+     - json
+
+Create a new file in the ~/searxng directory called uwsgi.ini. You can populate it with the values from the example uwsgi.ini from Searxng Github.
+
+Run the SearXNG docker image in your terminal.
+
+docker pull searxng/searxng
+ docker run -d --name searxng -p 8888:8080 -v ~/searxng:/etc/searxng --restart     always searxng/searxng:latest
+
+Note: SearXNG and Open WebUI both run on port 8080, so we can map SearXNG to the local machine port 8888.
+
+This agent uses the SearXNG API directly, so you do not need to follow the steps in the Open WebUI documentation to setup SearXNG in the UI of Open WebUI. It is only necessary if you want to use SearXNG via the Open WebUI interface apart from this agent.
 
 
 # 📚 Agents development
