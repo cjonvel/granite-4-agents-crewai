@@ -95,7 +95,7 @@ mkdir ~/searxng
 cd ~/searxng
 ```
 
-1. Create a new file in the ~/searxng directory called settings.yml and copy this code into the file.
+2. Create a new file in the ~/searxng directory called settings.yml and copy this code into the file.
 ```
 # see https://docs.searxng.org/admin/settings/settings.html#settings-use-default-settings
  use_default_settings: true
@@ -119,9 +119,9 @@ cd ~/searxng
      - json
 ```
 
-1. Create a new file in the ~/searxng directory called uwsgi.ini. You can populate it with the values from the example uwsgi.ini from Searxng Github.
+3. Create a new file in the ~/searxng directory called uwsgi.ini. You can populate it with the values from the example uwsgi.ini from Searxng Github.
 
-1. Run the SearXNG docker image in your terminal.
+4. Run the SearXNG docker image in your terminal.
 ```
 docker pull searxng/searxng
  docker run -d --name searxng -p 8888:8080 -v ~/searxng:/etc/searxng --restart     always searxng/searxng:latest
