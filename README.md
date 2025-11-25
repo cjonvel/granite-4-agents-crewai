@@ -66,17 +66,26 @@ open-webui serve
 
 Go to [ollama.com](https://ollama.com/) and hit Download!
 
-Once installed, pull the Granite 4 Micro model for the Granite Retrieval Agent
+Once installed, pull the Granite 4 Micro model for the Granite Retrieval Agent (not needed if you use granite-4-h-small from IBM Cloud)
 ```
 ollama pull ibm/granite4:latest
 ```
 
-Pull the Granite 4 Tiny model for the Image Researcher
+Pull the Granite 4 Tiny model for the Image Researcher  (not needed if you use granite-4-h-small from IBM Cloud)
 ```
 ollama pull ibm/granite4:tiny-h
 ```
 
-## **4. Optional: Set Up Web Search in Open WebUI**
+Pull the Granite 3.2 vision model for the vision model for both labs (not needed if you use llama-3-2-11b-vision-instruct from IBM Cloud) 
+```
+ollama pull ibm/granite4:tiny-h
+```
+
+## **4. watsonx.ai Model Gateway **
+
+For this lab, we have created an account on IBM Cloud so you can use LLM hosted on watsonx.ai. The new feature [Model Gateway](https://www.ibm.com/docs/en/watsonx/saas?topic=models-model-gateway-preview) allows you to securely access and interact with foundation models from multiple providers like AWS, Anthropic, Azure.. through the model gateway. Providers with their apiKey are registered on the gateway, then you can import models for each provider then decide which model will be visible for users based on IAM access management.
+
+## **5. Optional: Set Up Web Search in Open WebUI**
 
 * **Flexible Web Search**: Agents use the Open WebUI search API, integrating the search engine of your choice by following the  [Configuration guide](https://docs.openwebui.com/category/web-search). As an example, you can easily create a account on [tavily](https://app.tavily.com/home) with a GitHub or Google account and use tavily api key in Open Web UI, but please not you are limited in number of calls.
 
@@ -88,7 +97,7 @@ ollama pull ibm/granite4:tiny-h
  - **SearXNG**: If you want to use SearXNG as the engine, proceed to the following section.
  
  
-## **5.  Optional: Setup SearXNG for Web Search**
+## **6.  Optional: Setup SearXNG for Web Search**
 
 SearXNG is a metasearch engine that aggregates retrieved information from multiple search engines. The reason for its inclusion in this architecture is that it requires no SaaS API key, as it can run directly on your laptop.
 

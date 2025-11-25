@@ -1,7 +1,9 @@
 
-## **Granite Retrieval Agent**
+## **Granite Retrieval Agent (AG2-based RAG)**
 
-The **Granite Retrieval Agent** is an **Agentic RAG (Retrieval Augmented Generation) system** designed for querying both local documents and web retrieval sources. It uses multi-agent task planning, adaptive execution, and tool calling via **Granite 4 (`ibm/granite4:latest`)**.
+The **Granite Retrieval Agent  (AG2-based RAG)** is an **Agentic RAG (Retrieval Augmented Generation) system** designed for querying both local documents and web retrieval sources. It uses multi-agent task planning, adaptive execution, and tool calling via **Granite 4 (`ibm/granite4:latest`)**.
+* Queries **local documents** and **web sources**.
+* Performs **multi-agent task planning** and **adaptive execution**.
 
 Artificial intelligence (AI) agents are generative AI (gen AI) systems or programs capable of autonomously designing and executing task workflows using available tools. Can you build agentic workflows without needing extremely large, costly large language models (LLMs)? **The answer is yes.** In this tutorial, we will demonstrate how to build a multi agent RAG system locally.
  
@@ -73,7 +75,7 @@ The agent has access to two primary tools:
 
 ---
 
-### **Agent architecture:**
+## **Agent architecture:**
 
 ![alt text](docs/images/agent_arch.png)
 
@@ -81,60 +83,172 @@ The agent has access to two primary tools:
 ### **Develop the agent**
 
 
- 
- 
+1. Open the [granite_autogen_rag.py file](granite_autogen_rag.py) in your IDE.
 
-### **Retrieval Agent in Action:**
+2. Read carefully the section **Assistant prompts** at the beginning of the file to understand the system prompt for each agent.
+
+3. Have a look to the **Pipe** class definition and variables. Those are variables that you will be able to set values in Open WebUI directly and allow you the input your api key or change model name. Default is setup for ollama as follow:
+```
+class Pipe:
+    class Valves(BaseModel):
+        TASK_MODEL_ID: str = Field(default="ibm/granite4:latest")
+        VISION_MODEL_ID: str = Field(default="granite3.2-vision:2b")
+        OPENAI_API_URL: str = Field(default="http://localhost:11434")
+        OPENAI_API_KEY: str = Field(default="ollama")
+        VISION_API_URL: str = Field(default="http://localhost:11434/v1")
+        MODEL_TEMPERATURE: float = Field(default=0)
+        MAX_PLAN_STEPS: int = Field(default=6)
+```
+
+If you want to use watsonx.ai through openai, change the values to:
+```
+class Pipe:
+    class Valves(BaseModel):
+        TASK_MODEL_ID: str = Field(default="openai/ibm/granite-4-h-small")
+        VISION_MODEL_ID: str = Field(default="openai/meta-llama/llama-3-2-11b-vision-instruct")
+        OPENAI_API_URL: str = Field(default="https://ca-tor.ml.cloud.ibm.com/ml/gateway/v1")       
+        OPENAI_API_KEY: str = Field(default="")
+        VISION_API_URL: str = Field(default="https://ca-tor.ml.cloud.ibm.com/ml/gateway/v1")
+        MODEL_TEMPERATURE: float = Field(default=0)
+        MAX_PLAN_STEPS: int = Field(default=6)
+```
+
+4. Review class definition for `Plan`, `CriticDecision`, `Step` and `SearchQueries`. Those classes define the output format of each agent in our architecture.
+
+5. Edit the `base_llm_config` object. The default for ollama is:
+```
+        base_llm_config = {
+            "model": default_model,
+            "client_host": base_url,
+            "api_type": "ollama", 
+            "temperature": model_temp,
+            "num_ctx": 131072,
+        }
+```
+Change it if needed for watsonx.ai to:
+```
+        base_llm_config = {           
+            "model": default_model,
+            "base_url": base_url,
+            "api_type" : "openai",
+            "api_key": api_key,
+            "temperature": model_temp
+        }
+```
+
+6. Review the `llm_configs` object (same for ollama and watsonx.ai):
+```
+        llm_configs = {
+            "ollama_llm_config": {**base_llm_config, "config_list": [{**base_llm_config}]},
+            "planner_llm_config": {**base_llm_config, "config_list": [{**base_llm_config, "response_format": Plan}]},
+            "critic_llm_config": {**base_llm_config, "config_list": [{**base_llm_config, "response_format": CriticDecision}]},
+            "reflection_llm_config": {**base_llm_config, "config_list": [{**base_llm_config, "response_format": Step}]},
+            "search_query_llm_config": {**base_llm_config, "config_list": [{**base_llm_config, "response_format": SearchQueries}]},
+            "vision_llm_config": {
+                "config_list": [
+                    {
+                        "model": vision_model,
+                        "base_url": vision_url,
+                        "api_type": "openai",
+                        "api_key": api_key
+                    }
+                ]
+            },
+```
+Each agent will use the base llm for its execution, but each one has a different format for the output, as per the class defined in step 4.
+
+7. In the next section of the file, we will define our agents. See how llm configuration and prompt are associated for each one. Each agent is of type [autogen.ConversableAgent](https://docs.ag2.ai/latest/docs/api-reference/autogen/ConversableAgent/)
+```
+### Agents
+        # Generic LLM completion, used for servicing Open WebUI originated requests
+        generic_assistant = ConversableAgent(
+            name="Generic_Assistant",
+            llm_config=llm_configs["ollama_llm_config"],
+            human_input_mode="NEVER",
+        )
+        
+        # Vision Assistant
+        vision_assistant = ConversableAgent(
+            name="Vision_Assistant",
+            llm_config=llm_configs["vision_llm_config"],
+            human_input_mode="NEVER",
+        )
+
+        # Provides the initial high level plan
+        planner = ConversableAgent(
+            name="Planner",
+            system_message=PLANNER_MESSAGE,
+            llm_config=llm_configs["planner_llm_config"],
+            human_input_mode="NEVER",
+        )
+```
+
+8. Next, review the `Tool Definitions` section, for example:
+```
+    @assistant.register_for_llm(
+            name="personal_knowledge_search",
+            description="Searches personal documents according to a given query",
+        )
+```
+We are defining 2 tools that our agents can use:    
+- *web_search*: use the configured search engine 
+- *personal_knowledge_search*: allow to search in documents provided by the user as local knowledge (collection of documents) 
+
+9. Review `Begin Agentic Workflow` section:
+- starts with the input sentence from the user in the chat
+- if images are detected in the input, use vision_assistant to describe the image
+- create the plan using the `user_proxy` to chat with the assistant
+- loop for each step with tjhe expected loop  research -> step critic -> goal critic -> reflection
+- when no more steps are planned exit and compile the answer
+
+
+## **Retrieval Agent in Action:**
+
+Review this short video as an example execution.
 
 ![The Agent in action](docs/images/GraniteAgentDemo.gif)
 
 
+## **Test your agent in **
 
-
-
-## **4. Import the Agent Python Script into Open WebUI**
+### **1. Import the Agent Python Script into Open WebUI**
 
 1. Open `http://localhost:8080/` and log into Open WebUI.
 2. Admin panel → **Functions** → **+** to add.
-3. Name it (e.g., “Granite RAG Agent” or “Image Research Agent”).
+3. Name it `Granite RAG Agent`
 4. Paste the relevant Python script:
+   * `granite_autogen_rag.py` (Retrieval Agent) 
+5. Save and **enable** the function.
+6. Adjust settings:
+| Parameter         | Description                               | Default Value                                                                  |
+| ----------------- | ----------------------------------------- | ------------------------------------------------------------------------------ |
+| task_model_id     | Primary model for task execution          | `ibm/granite4:latest` or `openai/ibm/granite-4-h-small`                        |
+| vision_model_id   | Vision model for image analysis           | `granite3.2-vision:2b` or `openai/meta-llama/llama-3-2-11b-vision-instruct`    |
+| openai_api_url    | API endpoint for OpenAI-style model calls | `http://localhost:11434` or `https://ca-tor.ml.cloud.ibm.com/ml/gateway/v1`    |
+| openai_api_key    | API key for authentication                | `ollama` or IBM cloud api key                                                  |
+| vision_api_url    | Endpoint for vision-related tasks         | `http://localhost:11434/v1` or `https://ca-tor.ml.cloud.ibm.com/ml/gateway/v1` | 
+| model_temperature | Controls response randomness              | `0`                                                                            |
+| max_plan_steps    | Maximum steps in agent planning           | `6`                                                                            |
 
-   * `granite_autogen_rag.py` (Retrieval Agent)
-   * `image_researcher_granite_crewai.py` (Image Research Agent)
-5. Save and enable the function.
-6. Adjust settings (inference endpoint, search API, **model ID**) via the gear icon.
+- review inference endpoint
+- enter your api Key
+- review the model names
 
-⚠️ If you see OpenTelemetry errors while importing `image_researcher_granite_crewai.py`, see [this issue](https://github.com/ibm-granite-community/granite-retrieval-agent/issues/25).
-
-
-# ⚙️ Configuration Parameters
-
-## **Granite Retrieval Agent**
-
-| Parameter         | Description                               | Default Value               |
-| ----------------- | ----------------------------------------- | --------------------------- |
-| task_model_id     | Primary model for task execution          | `ibm/granite4:latest`       |
-| vision_model_id   | Vision model for image analysis           | *(set as needed)*           |
-| openai_api_url    | API endpoint for OpenAI-style model calls | `http://localhost:11434`    |
-| openai_api_key    | API key for authentication                | `ollama`                    |
-| vision_api_url    | Endpoint for vision-related tasks         | `http://localhost:11434/v1` |
-| model_temperature | Controls response randomness              | `0`                         |
-| max_plan_steps    | Maximum steps in agent planning           | `6`                         |
-
-
-# 🚀 Usage
-
-## **1 Load Documents into Open WebUI**
+ 
+### **2 Load Documents into Open WebUI**
 
 1. In Open WebUI, navigate to `Workspace` → `Knowledge`.
 2. Click `+` to create a new collection.
-3. Upload documents for the **Granite Retrieval Agent** to query.
+3. Upload documents for the **Granite Retrieval Agent** to query. 
 
 
-## **Granite Retrieval Agent (AG2-based RAG)**
+### **3 Test in the chat **
 
-* Queries **local documents** and **web sources**.
-* Performs **multi-agent task planning** and **adaptive execution**.
+1. In Open WebUI, navigate to the home page. 
+2. Select your `Granite RAG Agent` in the list.
+3. Click the + icon and select `Attach knowledge`, select your created collection
+4. Type your query
+
 
 **Examples**
 
