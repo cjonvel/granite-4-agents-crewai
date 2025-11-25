@@ -87,119 +87,120 @@ The agent has access to two primary tools:
 
 2. Read carefully the section **Assistant prompts** at the beginning of the file to understand the system prompt for each agent.
 
-3. Have a look to the **Pipe** class definition and variables. Those are variables that you will be able to set values in Open WebUI directly and allow you the input your api key or change model name. Default is setup for ollama as follow:
-```
-class Pipe:
-    class Valves(BaseModel):
-        TASK_MODEL_ID: str = Field(default="ibm/granite4:latest")
-        VISION_MODEL_ID: str = Field(default="granite3.2-vision:2b")
-        OPENAI_API_URL: str = Field(default="http://localhost:11434")
-        OPENAI_API_KEY: str = Field(default="ollama")
-        VISION_API_URL: str = Field(default="http://localhost:11434/v1")
-        MODEL_TEMPERATURE: float = Field(default=0)
-        MAX_PLAN_STEPS: int = Field(default=6)
-```
+3. Have a look to the **Pipe** class definition and variables. Those are variables that you will be able to set values in Open WebUI directly and allow you the input your api key or change model name.
+  Default is setup for **ollama** as follow:
+  ```
+  class Pipe:
+      class Valves(BaseModel):
+          TASK_MODEL_ID: str = Field(default="ibm/granite4:latest")
+          VISION_MODEL_ID: str = Field(default="granite3.2-vision:2b")
+          OPENAI_API_URL: str = Field(default="http://localhost:11434")
+          OPENAI_API_KEY: str = Field(default="ollama")
+          VISION_API_URL: str = Field(default="http://localhost:11434/v1")
+          MODEL_TEMPERATURE: float = Field(default=0)
+          MAX_PLAN_STEPS: int = Field(default=6)
+  ```
 
-If you want to use watsonx.ai through openai, change the values to:
-```
-class Pipe:
-    class Valves(BaseModel):
-        TASK_MODEL_ID: str = Field(default="openai/ibm/granite-4-h-small")
-        VISION_MODEL_ID: str = Field(default="openai/meta-llama/llama-3-2-11b-vision-instruct")
-        OPENAI_API_URL: str = Field(default="https://ca-tor.ml.cloud.ibm.com/ml/gateway/v1")       
-        OPENAI_API_KEY: str = Field(default="")
-        VISION_API_URL: str = Field(default="https://ca-tor.ml.cloud.ibm.com/ml/gateway/v1")
-        MODEL_TEMPERATURE: float = Field(default=0)
-        MAX_PLAN_STEPS: int = Field(default=6)
-```
+  If you want to use **watsonx.ai** rather than ollam, change the values to:
+  ```
+  class Pipe:
+      class Valves(BaseModel):
+          TASK_MODEL_ID: str = Field(default="openai/ibm/granite-4-h-small")
+          VISION_MODEL_ID: str = Field(default="openai/meta-llama/llama-3-2-11b-vision-instruct")
+          OPENAI_API_URL: str = Field(default="https://ca-tor.ml.cloud.ibm.com/ml/gateway/v1")       
+          OPENAI_API_KEY: str = Field(default="")
+          VISION_API_URL: str = Field(default="https://ca-tor.ml.cloud.ibm.com/ml/gateway/v1")
+          MODEL_TEMPERATURE: float = Field(default=0)
+          MAX_PLAN_STEPS: int = Field(default=6)
+  ```
 
 4. Review class definition for `Plan`, `CriticDecision`, `Step` and `SearchQueries`. Those classes define the output format of each agent in our architecture.
 
-5. Edit the `base_llm_config` object. The default for ollama is:
-```
-        base_llm_config = {
-            "model": default_model,
-            "client_host": base_url,
-            "api_type": "ollama", 
-            "temperature": model_temp,
-            "num_ctx": 131072,
-        }
-```
-Change it if needed for watsonx.ai to:
-```
-        base_llm_config = {           
-            "model": default_model,
-            "base_url": base_url,
-            "api_type" : "openai",
-            "api_key": api_key,
-            "temperature": model_temp
-        }
-```
+5. Edit the `base_llm_config` object. The default for **ollama** is:
+  ```
+          base_llm_config = {
+              "model": default_model,
+              "client_host": base_url,
+              "api_type": "ollama", 
+              "temperature": model_temp,
+              "num_ctx": 131072,
+          }
+  ```
+  Change it if needed for **watsonx.ai** to:
+  ```
+          base_llm_config = {           
+              "model": default_model,
+              "base_url": base_url,
+              "api_type" : "openai",
+              "api_key": api_key,
+              "temperature": model_temp
+          }
+  ```
 
 6. Review the `llm_configs` object (same for ollama and watsonx.ai):
-```
-        llm_configs = {
-            "ollama_llm_config": {**base_llm_config, "config_list": [{**base_llm_config}]},
-            "planner_llm_config": {**base_llm_config, "config_list": [{**base_llm_config, "response_format": Plan}]},
-            "critic_llm_config": {**base_llm_config, "config_list": [{**base_llm_config, "response_format": CriticDecision}]},
-            "reflection_llm_config": {**base_llm_config, "config_list": [{**base_llm_config, "response_format": Step}]},
-            "search_query_llm_config": {**base_llm_config, "config_list": [{**base_llm_config, "response_format": SearchQueries}]},
-            "vision_llm_config": {
-                "config_list": [
-                    {
-                        "model": vision_model,
-                        "base_url": vision_url,
-                        "api_type": "openai",
-                        "api_key": api_key
-                    }
-                ]
-            },
-```
-Each agent will use the base llm for its execution, but each one has a different format for the output, as per the class defined in step 4.
+  ```
+          llm_configs = {
+              "ollama_llm_config": {**base_llm_config, "config_list": [{**base_llm_config}]},
+              "planner_llm_config": {**base_llm_config, "config_list": [{**base_llm_config, "response_format": Plan}]},
+              "critic_llm_config": {**base_llm_config, "config_list": [{**base_llm_config, "response_format": CriticDecision}]},
+              "reflection_llm_config": {**base_llm_config, "config_list": [{**base_llm_config, "response_format": Step}]},
+              "search_query_llm_config": {**base_llm_config, "config_list": [{**base_llm_config, "response_format": SearchQueries}]},
+              "vision_llm_config": {
+                  "config_list": [
+                      {
+                          "model": vision_model,
+                          "base_url": vision_url,
+                          "api_type": "openai",
+                          "api_key": api_key
+                      }
+                  ]
+              },
+  ```
+  Each agent will use the base llm for its execution, but each one has a different format for the output, as per the class defined in step 4.
 
 7. In the next section of the file, we will define our agents. See how llm configuration and prompt are associated for each one. Each agent is of type [autogen.ConversableAgent](https://docs.ag2.ai/latest/docs/api-reference/autogen/ConversableAgent/)
-```
-### Agents
-        # Generic LLM completion, used for servicing Open WebUI originated requests
-        generic_assistant = ConversableAgent(
-            name="Generic_Assistant",
-            llm_config=llm_configs["ollama_llm_config"],
-            human_input_mode="NEVER",
-        )
-        
-        # Vision Assistant
-        vision_assistant = ConversableAgent(
-            name="Vision_Assistant",
-            llm_config=llm_configs["vision_llm_config"],
-            human_input_mode="NEVER",
-        )
+  ```
+  ### Agents
+          # Generic LLM completion, used for servicing Open WebUI originated requests
+          generic_assistant = ConversableAgent(
+              name="Generic_Assistant",
+              llm_config=llm_configs["ollama_llm_config"],
+              human_input_mode="NEVER",
+          )
+          
+          # Vision Assistant
+          vision_assistant = ConversableAgent(
+              name="Vision_Assistant",
+              llm_config=llm_configs["vision_llm_config"],
+              human_input_mode="NEVER",
+          )
 
-        # Provides the initial high level plan
-        planner = ConversableAgent(
-            name="Planner",
-            system_message=PLANNER_MESSAGE,
-            llm_config=llm_configs["planner_llm_config"],
-            human_input_mode="NEVER",
-        )
-```
+          # Provides the initial high level plan
+          planner = ConversableAgent(
+              name="Planner",
+              system_message=PLANNER_MESSAGE,
+              llm_config=llm_configs["planner_llm_config"],
+              human_input_mode="NEVER",
+          )
+  ```
 
 8. Next, review the `Tool Definitions` section, for example:
-```
-    @assistant.register_for_llm(
-            name="personal_knowledge_search",
-            description="Searches personal documents according to a given query",
-        )
-```
-We are defining 2 tools that our agents can use:    
-- *web_search*: use the configured search engine 
-- *personal_knowledge_search*: allow to search in documents provided by the user as local knowledge (collection of documents) 
+  ```
+      @assistant.register_for_llm(
+              name="personal_knowledge_search",
+              description="Searches personal documents according to a given query",
+          )
+  ```
+  We are defining 2 tools that our agents can use:    
+  - *web_search*: use the configured search engine 
+  - *personal_knowledge_search*: allow to search in documents provided by the user as local knowledge (collection of documents) 
 
 9. Review `Begin Agentic Workflow` section:
-- starts with the input sentence from the user in the chat
-- if images are detected in the input, use vision_assistant to describe the image
-- create the plan using the `user_proxy` to chat with the assistant
-- loop for each step with tjhe expected loop  research -> step critic -> goal critic -> reflection
-- when no more steps are planned exit and compile the answer
+  - starts with the input sentence from the user in the chat
+  - if images are detected in the input, use vision_assistant to describe the image
+  - create the plan using the `user_proxy` to chat with the assistant
+  - loop for each step with tjhe expected loop  research -> step critic -> goal critic -> reflection
+  - when no more steps are planned exit and compile the answer
 
 
 ## **Retrieval Agent in Action:**
