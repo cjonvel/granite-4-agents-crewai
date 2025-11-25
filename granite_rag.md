@@ -63,33 +63,32 @@ The following architecture diagram illustrates how the Granite Retrieval Agent i
 
 The agent has access to two primary tools:
 
-- **Document search tool**: Fetches relevant information from a vector database containing uploaded project notes or documents stored as embeddings. This vector search leverages the built-in documental retrieval APIs inside of Open WebUI, rather than setting up an entirely separate data store.
+    - **Document search tool**: Fetches relevant information from a vector database containing uploaded project notes or documents stored as embeddings. This vector search leverages the built-in documental retrieval APIs inside of Open WebUI, rather than setting up an entirely separate data store.
 
-- **Web search tool**: Performs web-based searches to gather external knowledge and real-time information. In this case, we are using SearXNG as our metasearch engine.
+    - **Web search tool**: Performs web-based searches to gather external knowledge and real-time information. In this case, we are using SearXNG as our metasearch engine.
 
 - **Optional Ollama**: You can download IBM Granite 4 H Tiny LLM that will serve as the language model powering the system. It is hosted locally using Ollama, ensuring fast inference, cost efficiency and data privacy.
 
 - **watsonx.ai on IBM Cloud**: thanks to the api key that the instructor will share with you, use Granite 4 H Small to test the power of a enterprise grade agentic LLM, either through openai REST API or watsonx.ai REST api
 
+---
+
+### **Agent architecture:**
+
+![alt text](docs/images/agent_arch.png)
+
+---
+### **Develop the agent**
 
 
-
-### 🔹 Key Features:
-
-* General agentic RAG for document and web retrieval using **Autogen/AG2**.
-* Uses **Granite 4 (ibm/granite4:latest)** as the primary language model.
-* Integrates with [Open WebUI Functions](https://docs.openwebui.com/features/plugin/functions/) for interaction via a chat UI.
-* **Optimized for local execution** (e.g., tested on MacBook Pro M3 Max with 64 GB RAM).
+ 
+ 
 
 ### **Retrieval Agent in Action:**
 
 ![The Agent in action](docs/images/GraniteAgentDemo.gif)
 
-### **Architecture:**
 
-![alt text](docs/images/agent_arch.png)
-
----
 
 
 

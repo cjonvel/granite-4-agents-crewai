@@ -79,8 +79,13 @@ ollama pull ibm/granite4:tiny-h
 ## **4. Optional: Set Up Web Search in Open WebUI**
 
 * **Flexible Web Search**: Agents use the Open WebUI search API, integrating the search engine of your choice by following the  [Configuration guide](https://docs.openwebui.com/category/web-search). As an example, you can easily create a account on [tavily](https://app.tavily.com/home) with a GitHub or Google account and use tavily api key in Open Web UI, but please not you are limited in number of calls.
-I
-If you want to use SearXNG as the engine, proceed to the following section.
+
+ - **Tavily**: For example for Tavily, find your api key on Tavily home page. Then open your Open WebUI on [http://localhost:8080](http://localhost:8080) and in the bottom left corner, click `kermit` and open the `Settings` menu. On the bottom left of the panel, click the grey `Admin panel` menu. Click on `Web Search` then :
+    - toggle the button to activate the search
+    - in select engine, select `tavily`
+    - in `Tavily API Key` paste your key
+
+ - **SearXNG**: If you want to use SearXNG as the engine, proceed to the following section.
  
  
 ## **5.  Optional: Setup SearXNG for Web Search**
