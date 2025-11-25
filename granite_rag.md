@@ -185,15 +185,15 @@ The agent has access to two primary tools:
   ```
 
 8. Next, review the `Tool Definitions` section, for example:
-  ```
-      @assistant.register_for_llm(
-              name="personal_knowledge_search",
-              description="Searches personal documents according to a given query",
-          )
-  ```
-  We are defining 2 tools that our agents can use:    
-  - *web_search*: use the configured search engine 
-  - *personal_knowledge_search*: allow to search in documents provided by the user as local knowledge (collection of documents) 
+    ```
+        @assistant.register_for_llm(
+                name="personal_knowledge_search",
+                description="Searches personal documents according to a given query",
+            )
+    ```
+    We are defining 2 tools that our agents can use:    
+    - *web_search*: use the configured search engine 
+    - *personal_knowledge_search*: allow to search in documents provided by the user as local knowledge (collection of documents) 
 
 9. Review `Begin Agentic Workflow` section:
   - starts with the input sentence from the user in the chat
@@ -221,6 +221,7 @@ Review this short video as an example execution.
    * `granite_autogen_rag.py` (Retrieval Agent) 
 5. Save and **enable** the function.
 6. Adjust settings:
+
 | Parameter         | Description                               | Default Value                                                                  |
 | ----------------- | ----------------------------------------- | ------------------------------------------------------------------------------ |
 | task_model_id     | Primary model for task execution          | `ibm/granite4:latest` or `openai/ibm/granite-4-h-small`                        |
