@@ -81,9 +81,165 @@ Pull the Granite 3.2 vision model for the vision model for both labs (not needed
 ollama pull ibm/granite4:tiny-h
 ```
 
-## **4. watsonx.ai Model Gateway **
+## **4. watsonx.ai Model Gateway feature**
 
-For this lab, we have created an account on IBM Cloud so you can use LLM hosted on watsonx.ai. The new feature [Model Gateway](https://www.ibm.com/docs/en/watsonx/saas?topic=models-model-gateway-preview) allows you to securely access and interact with foundation models from multiple providers like AWS, Anthropic, Azure.. through the model gateway. Providers with their apiKey are registered on the gateway, then you can import models for each provider then decide which model will be visible for users based on IAM access management.
+For this lab, we have created an account on IBM Cloud so you can use LLM hosted on watsonx.ai. The new feature [Model Gateway](https://www.ibm.com/docs/en/watsonx/saas?topic=models-model-gateway-preview) allows you to securely access and interact with foundation models from multiple providers like AWS, Anthropic, Azure.. through the model gateway. Providers with their apiKey are registered on the gateway, then you can import models for each provider then decide which model will be visible for users based on IAM access management. You will be provided an api key by the instuctors that only has access to this gateway and models.
+
+![model gateway text](./images/model-gateway.png)
+
+### Test the model gateway with Granite 4 H Small##
+Before using it in the lab, double check that it is working fine and that the provided api key is working. 
+
+Export your key:
+```
+export IBM_CLOUD_APIKEY="xxxxxxxx"
+```
+
+Then run this openai curl command to see Granite 4 H Small in action with function calling:
+
+```
+curl --location 'https://ca-tor.ml.cloud.ibm.com/ml/gateway/v1/chat/completions' \
+--header 'Content-Type: application/json' \
+-H "Authorization: Bearer ${IBM_CLOUD_APIKEY}" \
+--data '{
+    "messages": [
+        {
+            "role": "system",
+            "content": "The current date and time is 2023-07-22T13:57:34+02:00. Be very presumptive when guessing the values of function parameters."
+        },
+        {
+            "role": "user",
+            "content": "What things can I do in Amsterdam?"
+        }
+    ],
+    "model": "ibm/granite-4-h-small",
+    "max_tokens": null,
+    "stream": false,
+    "n": 1,
+    "temperature": 0.0,
+    "functions": [
+        {
+            "name": "planner",
+            "description": "Plan a public transport trip from train station A to station B in the Netherlands.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "origin": {
+                        "description": "origin station name in the Netherlands for the trip. Be presumtive and accept very short shorthands.",
+                        "type": "string"
+                    },
+                    "destination": {
+                        "description": "destination station name in the Netherlands for the trip. Be presumptive and accept very short shorthands.",
+                        "type": "string"
+                    },
+                    "trip_date_time": {
+                        "description": "Requested DateTime for the departure or arrival of the trip in '\''YYYY-MM-DDTHH:MM:SS+02:00'\'' format. The user will use a time in a 12 hour system, make an intelligent guess about what the user is most likely to mean in terms of a 24 hour system, e.g. not planning for the past.",
+                        "type": "string"
+                    },
+                    "departure": {
+                        "description": "True to depart at the given time, False to arrive at the given time",
+                        "type": "boolean"
+                    },
+                    "language": {
+                        "description": "Language of the input text",
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "origin",
+                    "destination",
+                    "departure",
+                    "language"
+                ]
+            }
+        },
+        {
+            "name": "train_station_departures",
+            "description": "Show the departures from a train station in the Netherlands",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "departure_station": {
+                        "description": "Departure train station in the Netherlands",
+                        "type": "string"
+                    },
+                    "dateTime": {
+                        "description": "Requested DateTime for the departures or arrival of the trip in '\''YYYY-MM-DDTHH:MM:SS+02:00'\'' format.",
+                        "type": "string"
+                    },
+                    "transport_type": {
+                        "description": "Type of departures to show. Either '\''train'\'' or '\''bus'\''",
+                        "enum": [
+                            "train",
+                            "bus"
+                        ],
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "departure_station",
+                    "dateTime"
+                ]
+            }
+        },
+        {
+            "name": "outings",
+            "description": "Show the available outings in an area in the Netherlands",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "area": {
+                        "description": "Area in the Netherlands",
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "area"
+                ]
+            }
+        },
+        {
+            "name": "show_screen",
+            "description": "Determine which screen the user wants to see",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "screen_to_show": {
+                        "description": "type of screen to show. Either '\''account'\'': '\''all personal data of the user'\'', '\''settings'\'': '\''if the user wants to change the settings of the app'\''",
+                        "enum": [
+                            "account",
+                            "settings"
+                        ],
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "screen_to_show"
+                ]
+            }
+        },
+        {
+            "name": "custom_search",
+            "description": "answer all questions about NS",
+            "parameters": {
+                "title": "QAToolInput",
+                "type": "object",
+                "properties": {
+                    "question": {
+                        "title": "Question",
+                        "description": "question about NS",
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "question"
+                ]
+            }
+        }
+    ]
+}'
+```
+
 
 ## **5. Optional: Set Up Web Search in Open WebUI**
 
