@@ -229,6 +229,8 @@ Review this short video as an example execution.
  
 ### **2 Load Documents into Open WebUI**
 
+As an example, we will use a pdf document detailing [IBM Granite 4.0: A Hybrid LLM for Healthcare AI](https://intuitionlabs.ai/pdfs/ibm-granite-4-0-a-hybrid-llm-for-healthcare-ai.pdf) as the knowledge source. Download the file and save it to your computer. We will then use it in Open WebUI.
+
 1. In Open WebUI, navigate to `Workspace` → `Knowledge`.
 2. Click `+ New Knowledge` to create a new collection.
 3. Give a **name** and **description** of this collection, and click **Create knowledge**
