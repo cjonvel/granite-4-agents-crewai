@@ -220,7 +220,9 @@ Review this short video as an example execution.
 | model_temperature | Controls response randomness              | `0`                                                                            |
 | max_plan_steps    | Maximum steps in agent planning           | `6`                                                                            |
 
-  Ensure all settings and client the **Open Api Key** entry to add your key
+  Ensure all settings are ok.
+  
+  If you are using watsonx.ai on IBM Cloud, copy the api key shared by the instructors and click the **Open Api Key** entry to add your key:
   ![alt text](images/g3-valves.png)
 
 
