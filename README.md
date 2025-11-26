@@ -58,11 +58,18 @@ If you have a different python version, either update it or manage multiple pyth
 uv venv --python 3.11.6
 ```
 
+You
+
 ## **2. Install Open WebUI**
 
 ```bash
 pip install open-webui
 open-webui serve
+```
+
+If this does not work in your environment, you can install with uv, refer to [https://docs.openwebui.com/] for all installation methods:
+```bash
+DATA_DIR=~/.open-webui uvx --python 3.11 open-webui@latest serve
 ```
 
 To test the successful installation, open your browser on [http://localhost:8080]. When first connecting, you will be asked to enter your name, eventually change email and password then click **Create Admin Account** button.
@@ -89,7 +96,7 @@ ollama pull ibm/granite4:tiny-h
 Pull the Granite 3.2 vision model for the vision model for both labs (not needed if you use llama-3-2-11b-vision-instruct from IBM Cloud)
 
 ```
-ollama pull ibm/granite4:tiny-h
+ollama pull granite3.2-vision:2b
 ```
 
 ## **4. watsonx.ai Model Gateway feature**
