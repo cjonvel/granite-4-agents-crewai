@@ -1,54 +1,59 @@
 # Granite Retrieval and Image Research Agents
 
-
 ## Lab introduction
 
 During this lab we will develop 2 agents that are using IBM Granite 4 to plan and execute:
+
 - Granite Retrieval Agent
-- Image Resarch Agent  
+- Image Resarch Agent
 
 Here are the technologies/frameworks we will use for development and execution:
+
 - python as programming language
 - [CrewAI](https://www.crewai.com/?utm_source=ibm_developer&utm_content=in_content_link&utm_id=tutorials_awb-build-agentic-rag-system-granite) as the agentic framework
 - [Open WebUI](https://docs.openwebui.com/category/-web-search?utm_source=ibm_developer&utm_content=in_content_link&utm_id=tutorials_awb-build-agentic-rag-system-granite) as a local workbench to load and what with the agents
 - **optional** use [Ollama](https://ollama.com/) locally to run the small and powerful Granite 4 H Tiny model!
-- **optional** use a Web Search engine in Open WebUI, thanks to Open WebUI you can configure the engine of your choice (Tavily, SearXNG,  )
+- **optional** use a Web Search engine in Open WebUI, thanks to Open WebUI you can configure the engine of your choice (Tavily, SearXNG, )
 - Granite 4 and llama vision models running on watsonx.ai on IBM cloud
 
 ## Why Granite 4 for these agents?
 
-Granite 4 introduces a **hybrid Mamba-2/Transformer** architecture (with MoE variants) that targets **lower memory use and faster inference**, making it a strong fit for agentic RAG and function-calling workflows. It uses **>70% lower memory** and **~2× faster inference** vs. comparable models, which helps these agents run locally or on modest GPUs with lower cost and latency. Models are **Apache-2.0 licensed**, **ISO 42001 certified**, and cryptographically signed for governance and security. 
+Granite 4 introduces a **hybrid Mamba-2/Transformer** architecture (with MoE variants) that targets **lower memory use and faster inference**, making it a strong fit for agentic RAG and function-calling workflows. It uses **>70% lower memory** and **~2× faster inference** vs. comparable models, which helps these agents run locally or on modest GPUs with lower cost and latency. Models are **Apache-2.0 licensed**, **ISO 42001 certified**, and cryptographically signed for governance and security.
 
- The **Granite 4** family emphasizes **instruction following, tool calling, RAG, JSON output, multilingual dialog, and code (incl. FIM)**, aligning with both agents’ needs.
+The **Granite 4** family emphasizes **instruction following, tool calling, RAG, JSON output, multilingual dialog, and code (incl. FIM)**, aligning with both agents’ needs.
 
-- **H-Small (32B total / ~9B active)**  is a 32B parameter long-context instruct model finetuned from Granite-4.0-H-Small-Base. This model is developed using a diverse set of techniques with a structured chat format, including supervised finetuning, model alignment using reinforcement learning, and model merging. **Granite 4.0 instruct** models feature improved instruction following (IF) and tool-calling capabilities, **making them more effective in enterprise applications**.
+- **H-Small (32B total / ~9B active)** is a 32B parameter long-context instruct model finetuned from Granite-4.0-H-Small-Base. This model is developed using a diverse set of techniques with a structured chat format, including supervised finetuning, model alignment using reinforcement learning, and model merging. **Granite 4.0 instruct** models feature improved instruction following (IF) and tool-calling capabilities, **making them more effective in enterprise applications**.
+
   > You will have the option to use this model running on IBM Cloud.
 
 - **H-Tiny (7B total / ~1B active)** is optimized for **low-latency, small-footprint deployments**—ideal for the Image Researcher’s quick tool calls and orchestration steps.
+
   > You will have the option to use this model running locally with ollama
 
 - **H-Micro (3B total)** a dense hybrid model with 3B parameters.
 
-- **Micro (3B total)**  a dense model with a conventional attention-driven transformer architecture, to accommodate platforms and communities that do not yet support hybrid architectures.
+- **Micro (3B total)** a dense model with a conventional attention-driven transformer architecture, to accommodate platforms and communities that do not yet support hybrid architectures.
   > You will have the option to use this model running locally with ollama
----
 
+---
 
 # 🔑 Prepare your environment
 
-* **Common Installation Instructions**: The setup for **Open WebUI** remains the same for both agents.
+- **Common Installation Instructions**: The setup for **Open WebUI** remains the same for both agents.
 
-## **1. Set up your python environment**                    
+## **1. Set up your python environment**
 
 This lab has been tested with python 3.11, also this is recommended to use an IDE like Visual Studio Code but this is not mandatory.
 
 If you already have a 3.11 python environment, you can create a new virtual environment with [venv](https://docs.python.org/3/library/venv.html).
+
 ```
 python -m venv /path/to/new/virtual/environment
 source /path/to/new/virtual/environment/bin/activate
 ```
 
-If you have a different python version, either update it or manage multiple python versions with  [uv](https://docs.astral.sh/uv/concepts/python-versions/#python-version-files) or pyenv.
+If you have a different python version, either update it or manage multiple python versions with [uv](https://docs.astral.sh/uv/concepts/python-versions/#python-version-files) or pyenv.
+
 ```
 uv venv --python 3.11.6
 ```
@@ -60,9 +65,8 @@ pip install open-webui
 open-webui serve
 ```
 
-To test the successful installation, open your browser on [http://localhost:8080]. When first connecting, you will be asked to enter your name, eventually change email and password then click  **Create Admin Account** button.
+To test the successful installation, open your browser on [http://localhost:8080]. When first connecting, you will be asked to enter your name, eventually change email and password then click **Create Admin Account** button.
 ![login](images/openwebui-login.png)
-
 
 ## **3. Optional: Set Up Ollama**
 
@@ -71,16 +75,19 @@ To test the successful installation, open your browser on [http://localhost:8080
 Go to [ollama.com](https://ollama.com/) and hit Download!
 
 Once installed, pull the Granite 4 Micro model for the Granite Retrieval Agent (not needed if you use granite-4-h-small from IBM Cloud)
+
 ```
 ollama pull ibm/granite4:latest
 ```
 
-Pull the Granite 4 Tiny model for the Image Researcher  (not needed if you use granite-4-h-small from IBM Cloud)
+Pull the Granite 4 Tiny model for the Image Researcher (not needed if you use granite-4-h-small from IBM Cloud)
+
 ```
 ollama pull ibm/granite4:tiny-h
 ```
 
-Pull the Granite 3.2 vision model for the vision model for both labs (not needed if you use llama-3-2-11b-vision-instruct from IBM Cloud) 
+Pull the Granite 3.2 vision model for the vision model for both labs (not needed if you use llama-3-2-11b-vision-instruct from IBM Cloud)
+
 ```
 ollama pull ibm/granite4:tiny-h
 ```
@@ -92,9 +99,11 @@ For this lab, we have created an account on IBM Cloud so you can use LLM hosted 
 ![model gateway text](./images/model-gateway.png)
 
 ### Test the model gateway with Granite 4 H Small
-Before using it in the lab, double check that it is working fine and that the provided api key is working. 
+
+Before using it in the lab, double check that it is working fine and that the provided api key is working.
 
 Export your key:
+
 ```
 export IBM_CLOUD_APIKEY="xxxxxxxx"
 ```
@@ -244,32 +253,34 @@ curl --location 'https://ca-tor.ml.cloud.ibm.com/ml/gateway/v1/chat/completions'
 }'
 ```
 
-
 ## **5. Optional: Set Up Web Search in Open WebUI**
 
-* **Flexible Web Search**: Agents use the Open WebUI search API, integrating the search engine of your choice by following the  [Configuration guide](https://docs.openwebui.com/category/web-search). As an example, you can easily create a account on [tavily](https://app.tavily.com/home) with a GitHub or Google account and use tavily api key in Open Web UI, but please not you are limited in number of calls.
+- **Flexible Web Search**: Agents use the Open WebUI search API, integrating the search engine of your choice by following the [Configuration guide](https://docs.openwebui.com/category/web-search). As an example, you can easily create a account on [tavily](https://app.tavily.com/home) with a GitHub or Google account and use tavily api key in Open Web UI, but please not you are limited in number of calls.
 
- - **Tavily**: For example for Tavily, find your api key on Tavily home page. Then open your Open WebUI on [http://localhost:8080](http://localhost:8080) and in the bottom left corner, click `kermit` and open the `Settings` menu. On the bottom left of the panel, click the grey `Admin settings` menu. Click on `Web Search` then :
-    - toggle the button to activate the search
-    - in select engine, select `tavily`
-    - in `Tavily API Key` paste your key
+* **Tavily**: For example for Tavily, find your api key on Tavily home page. Then open your Open WebUI on [http://localhost:8080](http://localhost:8080) and in the bottom left corner, click `kermit` and open the `Settings` menu. On the bottom left of the panel, click the grey `Admin settings` menu. Click on `Web Search` then :
 
- - **SearXNG**: If you want to use SearXNG as the engine, proceed to the following section.
- 
- 
-## **6.  Optional: Setup SearXNG for Web Search**
+  - toggle the button to activate the search
+  - in select web search engine, select `tavily`
+  - in `Tavily API Key` paste your key
+  - in select web loader engine, select `tavily`
+
+* **SearXNG**: If you want to use SearXNG as the engine, proceed to the following section.
+
+## **6. Optional: Setup SearXNG for Web Search**
 
 SearXNG is a metasearch engine that aggregates retrieved information from multiple search engines. The reason for its inclusion in this architecture is that it requires no SaaS API key, as it can run directly on your laptop.
 
 For more in-depth instructions on how to run Searxng, refer to the Open WebUI Documentation, detailing integration with Searxng. Here is a quick walk-through:
 
 1. Create configuration files for Searxng.
+
 ```
 mkdir ~/searxng
 cd ~/searxng
 ```
 
 2. Create a new file in the ~/searxng directory called settings.yml and copy this code into the file.
+
 ```
 # see https://docs.searxng.org/admin/settings/settings.html#settings-use-default-settings
  use_default_settings: true
@@ -296,40 +307,40 @@ cd ~/searxng
 3. Create a new file in the ~/searxng directory called uwsgi.ini. You can populate it with the values from the example uwsgi.ini from Searxng Github.
 
 4. Run the SearXNG docker image in your terminal.
+
 ```
 docker pull searxng/searxng
  docker run -d --name searxng -p 8888:8080 -v ~/searxng:/etc/searxng --restart     always searxng/searxng:latest
 ```
+
 Note: SearXNG and Open WebUI both run on port 8080, so we can map SearXNG to the local machine port 8888.
 
 This agent uses the SearXNG API directly, so you do not need to follow the steps in the Open WebUI documentation to setup SearXNG in the UI of Open WebUI. It is only necessary if you want to use SearXNG via the Open WebUI interface apart from this agent.
-
 
 # 📚 Agents development
 
 Here are the links for each agent tutorial, you can run in any order you want. Use the link in the latest column to open the tutorial.
 
-| Feature                 | Description                                                          | Models Used                                | Code Link                                                                  |  Link                                                                                                                                                                         |
-| ----------------------- | -------------------------------------------------------------------- | ------------------------------------------ | -------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Granite Retrieval Agent | General Agentic RAG for document and web retrieval using Autogen/AG2 | **Granite-4.0-H-Small (ibm-granite/granite-4.0-h-small:latest)** [Granite 4 h small on HuggingFace](https://huggingface.co/ibm-granite/granite-4.0-h-small)        | [granite_autogen_rag.py](./granite_autogen_rag.py)                         | [Build a multi-agent RAG system with Granite locally](./granite_rag.md)                                                      |
-| Image Research Agent    | Image-based multi-agent research using CrewAI with Granite Vision    | **Granite-4.0-H-Small (ibm-granite/granite-4.0-h-small:latest)** [Granite 4 h small on HuggingFace](https://huggingface.co/ibm-granite/granite-4.0-h-small)   | [image_researcher_granite_crewai.py](./image_researcher_granite_crewai.py) | [Build an AI research agent for image analysis with Granite 3.2 Reasoning and Vision models](image_researcher.md) |
+| Feature                 | Description                                                          | Models Used                                                                                                                                                 | Code Link                                                                  | Link                                                                                                              |
+| ----------------------- | -------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------- |
+| Granite Retrieval Agent | General Agentic RAG for document and web retrieval using Autogen/AG2 | **Granite-4.0-H-Small (ibm-granite/granite-4.0-h-small:latest)** [Granite 4 h small on HuggingFace](https://huggingface.co/ibm-granite/granite-4.0-h-small) | [granite_autogen_rag.py](./granite_autogen_rag.py)                         | [Build a multi-agent RAG system with Granite locally](./granite_rag.md)                                           |
+| Image Research Agent    | Image-based multi-agent research using CrewAI with Granite Vision    | **Granite-4.0-H-Small (ibm-granite/granite-4.0-h-small:latest)** [Granite 4 h small on HuggingFace](https://huggingface.co/ibm-granite/granite-4.0-h-small) | [image_researcher_granite_crewai.py](./image_researcher_granite_crewai.py) | [Build an AI research agent for image analysis with Granite 3.2 Reasoning and Vision models](image_researcher.md) |
 
 ---
 
 # Extra work !
 
-If you had enough time you can test specific granite 3 models like the Time Series model and the Guardian model. 
+If you had enough time you can test specific granite 3 models like the Time Series model and the Guardian model.
 
 You can easily test those models through notebooks in your python environment.
 
 ## Set up your python environment
 
-There is a collection of granite workshop available to you, from this collection we will just run the time series workshop. 
+There is a collection of granite workshop available to you, from this collection we will just run the time series workshop.
 
-As you already ran python for the previous lab, you should be able to run notebooks locally, so please follow the setup for Jupyter: 
+As you already ran python for the previous lab, you should be able to run notebooks locally, so please follow the setup for Jupyter:
 
 [Granite workshop pre-work][https://ibm.github.io/granite-workshop/pre-work/#install-jupyter]
-
 
 ## Energy Demand Forecasting with Granite Timeseries Lab
 
@@ -340,7 +351,6 @@ Download the notebook directly from [https://github.com/IBM/granite-workshop/blo
 ```
 jupyter notebook notebooks/Time_Series_Getting_Started.ipynb
 ```
-
 
 ## Guardian lab
 
