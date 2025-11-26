@@ -240,8 +240,13 @@ Review this short video as an example execution.
 3. Click the + icon and select `Attach knowledge`, select your created collection
 4. Type your query
 
-Review the logs in the terminal where you start your Open WebUI server, to see what's happening!
+Wait for the answer. Review the logs in the terminal where you start your Open WebUI server, to see what's happening!
 
+![alt text](images/g4-response.png)
+
+Feel free to deep dive to learn more on granite 4!
+
+![alt text](images/g5-follow.png)
 
 **Examples**
 
