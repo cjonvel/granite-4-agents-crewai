@@ -67,11 +67,6 @@ The following architecture diagram illustrates how the Granite Retrieval Agent i
 
 ---
 
-## **Agent architecture:**
-
-![alt text](docs/images/agent_arch.png)
-
----
 ### **Develop the agent**
 
 
