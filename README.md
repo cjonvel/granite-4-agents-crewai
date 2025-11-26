@@ -316,3 +316,33 @@ Here are the links for each agent tutorial, you can run in any order you want. U
 
 ---
 
+# Extra work !
+
+If you had enough time you can test specific granite 3 models like the Time Series model and the Guardian model. 
+
+You can easily test those models through notebooks in your python environment.
+
+## Set up your python environment
+
+There is a collection of granite workshop available to you, from this collection we will just run the time series workshop. 
+
+As you already ran python for the previous lab, you should be able to run notebooks locally, so please follow the setup for Jupyter: 
+
+[Granite workshop pre-work][https://ibm.github.io/granite-workshop/pre-work/#install-jupyter]
+
+
+## Energy Demand Forecasting with Granite Timeseries Lab
+
+Lab reference: [Energy Demand Forecasting with Granite Timeseries](https://ibm.github.io/granite-workshop/lab-3/)
+
+Download the notebook directly from [https://github.com/IBM/granite-workshop/blob/main/notebooks/Time_Series_Getting_Started.ipynb] and run it with:
+
+```
+jupyter notebook notebooks/Time_Series_Getting_Started.ipynb
+```
+
+
+## Guardian lab
+
+Download a sample notebook to demonstrate Granite Guardian capabilities:
+[https://github.com/ibm-granite/granite-guardian/blob/main/cookbooks/granite-guardian-3.3/quickstart.ipynb]
