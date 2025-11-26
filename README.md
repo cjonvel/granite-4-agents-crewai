@@ -67,11 +67,6 @@ pip install open-webui
 open-webui serve
 ```
 
-If this does not work in your environment, you can install with uv, refer to [https://docs.openwebui.com/] for all installation methods:
-```bash
-DATA_DIR=~/.open-webui uvx --python 3.11 open-webui@latest serve
-```
-
 To test the successful installation, open your browser on [http://localhost:8080]. When first connecting, you will be asked to enter your name, eventually change email and password then click **Create Admin Account** button.
 ![login](images/openwebui-login.png)
 
