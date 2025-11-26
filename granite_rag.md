@@ -202,12 +202,13 @@ Review this short video as an example execution.
 ### **1. Import the Agent Python Script into Open WebUI**
 
 1. Open `http://localhost:8080/` and log into Open WebUI.
-2. Admin panel → **Functions** → **+** to add.
-3. Name it `Granite RAG Agent`
+2. Admin panel → **Functions** → **+ New Function** to add.
+3. Name it `Granite RAG Agent` and add a description to your function, eg "Queries local documents and web sources to perform the task asked by the user with plan, critic and reflect steps"
 4. Paste the relevant Python script:
    * `granite_autogen_rag.py` (Retrieval Agent) 
-5. Save and **enable** the function.
-6. Adjust settings:
+5. **Save** and **Confirm** the import
+6. **Enable** the function by clicking the toggle button
+7. Adjust settings by clicking the **wheel**  icon:
 
 | Parameter         | Description                               | Default Value                                                                  |
 | ----------------- | ----------------------------------------- | ------------------------------------------------------------------------------ |
@@ -219,16 +220,17 @@ Review this short video as an example execution.
 | model_temperature | Controls response randomness              | `0`                                                                            |
 | max_plan_steps    | Maximum steps in agent planning           | `6`                                                                            |
 
-- review inference endpoint
-- enter your api Key
-- review the model names
+  Ensure all settings and client the **Open Api Key** entry to add your key
+  ![alt text](images/g3-valves.png)
+
 
  
 ### **2 Load Documents into Open WebUI**
 
 1. In Open WebUI, navigate to `Workspace` → `Knowledge`.
-2. Click `+` to create a new collection.
-3. Upload documents for the **Granite Retrieval Agent** to query. 
+2. Click `+ New Knowledge` to create a new collection.
+3. Give a **name** and **description** of this collection, and click **Create knowledge**
+4. Click the **+** button on th right to add content and upload documents for the **Granite Retrieval Agent** to query. 
 
 
 ### **3 Test in the chat **
