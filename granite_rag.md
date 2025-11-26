@@ -92,8 +92,8 @@ The following architecture diagram illustrates how the Granite Retrieval Agent i
   ```
   class Pipe:
       class Valves(BaseModel):
-          TASK_MODEL_ID: str = Field(default="openai/ibm/granite-4-h-small")
-          VISION_MODEL_ID: str = Field(default="openai/meta-llama/llama-3-2-11b-vision-instruct")
+          TASK_MODEL_ID: str = Field(default="ibm/granite-4-h-small")
+          VISION_MODEL_ID: str = Field(default="meta-llama/llama-3-2-11b-vision-instruct")
           OPENAI_API_URL: str = Field(default="https://ca-tor.ml.cloud.ibm.com/ml/gateway/v1")       
           OPENAI_API_KEY: str = Field(default="")
           VISION_API_URL: str = Field(default="https://ca-tor.ml.cloud.ibm.com/ml/gateway/v1")
@@ -212,8 +212,8 @@ Review this short video as an example execution.
 
 | Parameter         | Description                               | Default Value                                                                  |
 | ----------------- | ----------------------------------------- | ------------------------------------------------------------------------------ |
-| task_model_id     | Primary model for task execution          | `ibm/granite4:latest` or `openai/ibm/granite-4-h-small`                        |
-| vision_model_id   | Vision model for image analysis           | `granite3.2-vision:2b` or `openai/meta-llama/llama-3-2-11b-vision-instruct`    |
+| task_model_id     | Primary model for task execution          | `ibm/granite4:latest` or `ibm/granite-4-h-small`                        |
+| vision_model_id   | Vision model for image analysis           | `granite3.2-vision:2b` or `meta-llama/llama-3-2-11b-vision-instruct`    |
 | openai_api_url    | API endpoint for OpenAI-style model calls | `http://localhost:11434` or `https://ca-tor.ml.cloud.ibm.com/ml/gateway/v1`    |
 | openai_api_key    | API key for authentication                | `ollama` or IBM cloud api key                                                  |
 | vision_api_url    | Endpoint for vision-related tasks         | `http://localhost:11434/v1` or `https://ca-tor.ml.cloud.ibm.com/ml/gateway/v1` | 
@@ -239,6 +239,8 @@ Review this short video as an example execution.
 2. Select your `Granite RAG Agent` in the list.
 3. Click the + icon and select `Attach knowledge`, select your created collection
 4. Type your query
+
+Review the logs in the terminal where you start your Open WebUI server, to see what's happening!
 
 
 **Examples**

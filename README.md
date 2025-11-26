@@ -1,7 +1,7 @@
 # Granite Retrieval and Image Research Agents
 
 
-## Lab introdction
+## Lab introduction
 
 During this lab we will develop 2 agents that are using IBM Granite 4 to plan and execute:
 - Granite Retrieval Agent
