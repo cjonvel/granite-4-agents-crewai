@@ -57,13 +57,9 @@ The following architecture diagram illustrates how the Granite Retrieval Agent i
 
 - **Open WebUI**: The user interacts with the system through an intuitive chat interface hosted in Open WebUI. This interface acts as the primary point for submitting queries (such as “Fetch me the latest news articles pertaining to my project notes”) and viewing the outputs.
 
-- **Python-based** agent (AG2 Framework): At the core of the system is a Python-based agent built using AutoGen (AG2). This agent coordinates the workflow by breaking down tasks and dynamically calling tools to execute steps.
-
-The agent has access to two primary tools:
-
-    - **Document search tool**: Fetches relevant information from a vector database containing uploaded project notes or documents stored as embeddings. This vector search leverages the built-in documental retrieval APIs inside of Open WebUI, rather than setting up an entirely separate data store.
-
-    - **Web search tool**: Performs web-based searches to gather external knowledge and real-time information. In this case, we are using SearXNG as our metasearch engine.
+- **Python-based** agent (AG2 Framework): At the core of the system is a Python-based agent built using AutoGen (AG2). This agent coordinates the workflow by breaking down tasks and dynamically calling tools to execute steps. The agent has access to two primary tools:
+  - **Document search tool**: Fetches relevant information from a vector database containing uploaded project notes or documents stored as embeddings. This vector search leverages the built-in documental retrieval APIs inside of Open WebUI, rather than setting up an entirely separate data store.
+  - **Web search tool**: Performs web-based searches to gather external knowledge and real-time information. In this case, we are using SearXNG as our metasearch engine.
 
 - **Optional Ollama**: You can download IBM Granite 4 H Tiny LLM that will serve as the language model powering the system. It is hosted locally using Ollama, ensuring fast inference, cost efficiency and data privacy.
 
