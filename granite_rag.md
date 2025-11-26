@@ -67,8 +67,8 @@ The following architecture diagram illustrates how the Granite Retrieval Agent i
 
 ---
 
-### **Develop the agent**
 
+## **Develop the agent**
 
 1. Open the [granite_autogen_rag.py file](granite_autogen_rag.py) in your IDE.
 

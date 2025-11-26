@@ -60,6 +60,10 @@ pip install open-webui
 open-webui serve
 ```
 
+To test the successful installation, open your browser on [http://localhost:8080]. When first connecting, you will be asked to enter your name, eventually change email and password then click  **Create Admin Account** button.
+![login](images/openwebui-login.png)
+
+
 ## **3. Optional: Set Up Ollama**
 
 > If you don't want to setup ollama or you don't have a performant network to download several Gb we recommand to skip these step and use Granite models from watsonx.ai on IBM Cloud with the api key that will be shared with you (only available for current day). Micro model is about ~8Gb and H-Tiny is about ~15Gb.
