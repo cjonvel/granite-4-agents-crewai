@@ -58,13 +58,13 @@ The environment has been setup as per the readme instructions.
 
 ### Step 1. Set up connections to the two LLMs
 
-CrewAI uses LiteLLM to connect to a wide variety of Language Models (LLMs). This integration provides extensive versatility, allowing you to use models from numerous providers with a simple, unified interface. 
+CrewAI uses **LiteLLM** to connect to a wide variety of Language Models (LLMs). This integration provides extensive versatility, allowing you to use models from numerous providers with a simple, unified interface. 
 
 First, we need to set up connections to the two LLMs we will be using:
 
-  -  Llama 3.2 11b Vision Instruct (or Granite 3.2 vision locally with ollama) Vision LLM for transforming images into descriptive text
+  -  **Llama 3.2 11b Vision Instruct** (or Granite 3.2 vision locally with ollama) Vision LLM for transforming images into descriptive text
 
-  -  Granite 4.0 H Small (or Granite 4.0 h Tiny locally with ollama) for all other language-related tasks including planning and reasoning.
+  -  **Granite 4.0 H Small** (or Granite 4.0 h Tiny locally with ollama) for all other language-related tasks including planning and reasoning.
 
 Open [image_researcher_granite_crewai.py](image_researcher_granite_crewai.py) in your favorite IDE.
 
@@ -384,4 +384,3 @@ Break down the image into components and provide more information on each concep
 The first step of the agent's process is describing the image, and then breaking that down into individual items to be researched. Below is the output of the agent, which, when deployed in OpenWebUI, can be seen in the Open WebUI server logs.
   
 
-  
