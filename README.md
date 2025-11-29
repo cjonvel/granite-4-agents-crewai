@@ -74,7 +74,7 @@ To test the successful installation, open your browser on [http://localhost:8080
 
 ## **3. LLMs call: use watsonx.ai Model Gateway**
 
-Today we will use Granite 4 on IBM Cloud to run the labs, as we will share with you a temporary access to the model (shared api key only available for the current day). However, the default implementation of the lab is to use ollama to run the models locally so you can run it without external dependencies. 
+Today we will use Granite 4 on IBM Cloud to run the labs, as we will share with you a temporary access to the model (shared api key only available for the current day). However, the default implementation of the lab is to use ollama to run the models locally so you can run on it later on without external dependencies. 
 
 > With [Model Gateway](https://www.ibm.com/docs/en/watsonx/saas?topic=models-model-gateway-preview), organizations can integrate IBM’s Granite models alongside industry-leading foundation models from OpenAI, Anthropic, NVIDIA, Cerebras and more without vendor lock-in. This AI-agnostic approach enables businesses to maintain control, enhance flexibility and optimize costs, regardless of where models are hosted.
 
@@ -85,33 +85,7 @@ For this lab, we have created an account on IBM Cloud so you can use Granite 4 h
 ![model gateway text](./images/model-gateway.png)
 
 
-## **4. Optional: Set Up Ollama**
-
-> We do not recommand to setup ollama locally unless you know your computer can handle it. You also need to have a performant network to download the models. Micro model is about ~8Gb and H-Tiny is about ~15Gb. 
-
-Using the models locally will show you that Granite 4 are small but performant!
-
-Go to [ollama.com](https://ollama.com/) and hit Download!
-
-Once installed, pull the Granite 4 Micro model for the Granite Retrieval Agent (not needed if you use granite-4-h-small from IBM Cloud)
-
-```
-ollama pull ibm/granite4:latest
-```
-
-Pull the Granite 4 Tiny model for the Image Researcher (not needed if you use granite-4-h-small from IBM Cloud)
-
-```
-ollama pull ibm/granite4:tiny-h
-```
-
-Pull the Granite 3.2 vision model for the vision model for both labs (not needed if you use llama-3-2-11b-vision-instruct from IBM Cloud)
-
-```
-ollama pull granite3.2-vision:2b
-```
-
-### Test the model gateway with Granite 4 H Small
+### **Test the model gateway with Granite 4 H Small**
 
 Before using it in the lab, double check that it is working fine and that the provided api key is working.
 
@@ -265,6 +239,35 @@ curl --location 'https://ca-tor.ml.cloud.ibm.com/ml/gateway/v1/chat/completions'
     ]
 }'
 ```
+
+
+
+## **4. Optional: Set Up Ollama**
+
+> We do not recommand to setup ollama locally unless you know your computer can handle it. You also need to have a performant network to download the models. Micro model is about ~8Gb and H-Tiny is about ~15Gb. 
+
+Using the models locally will show you that Granite 4 are small but performant!
+
+Go to [ollama.com](https://ollama.com/) and hit Download!
+
+Once installed, pull the Granite 4 Micro model for the Granite Retrieval Agent (not needed if you use granite-4-h-small from IBM Cloud)
+
+```
+ollama pull ibm/granite4:latest
+```
+
+Pull the Granite 4 Tiny model for the Image Researcher (not needed if you use granite-4-h-small from IBM Cloud)
+
+```
+ollama pull ibm/granite4:tiny-h
+```
+
+Pull the Granite 3.2 vision model for the vision model for both labs (not needed if you use llama-3-2-11b-vision-instruct from IBM Cloud)
+
+```
+ollama pull granite3.2-vision:2b
+```
+
 
 ## **5. Optional: Set Up Web Search in Open WebUI**
 
