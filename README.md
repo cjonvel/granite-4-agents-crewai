@@ -70,9 +70,26 @@ open-webui serve
 To test the successful installation, open your browser on [http://localhost:8080]. When first connecting, you will be asked to enter your name, eventually change email and password then click **Create Admin Account** button.
 ![login](images/openwebui-login.png)
 
-## **3. Optional: Set Up Ollama**
 
-> If you don't want to setup ollama or you don't have a performant network to download several Gb we recommand to skip these step and use Granite models from watsonx.ai on IBM Cloud with the api key that will be shared with you (only available for current day). Micro model is about ~8Gb and H-Tiny is about ~15Gb.
+
+## **3. LLMs call: use watsonx.ai Model Gateway**
+
+Today we will use Granite 4 on IBM Cloud to run the labs, as we will share with you a temporary access to the model (shared api key only available for the current day). However, the default implementation of the lab is to use ollama to run the models locally so you can run it without external dependencies. 
+
+> With [Model Gateway](https://www.ibm.com/docs/en/watsonx/saas?topic=models-model-gateway-preview), organizations can integrate IBM’s Granite models alongside industry-leading foundation models from OpenAI, Anthropic, NVIDIA, Cerebras and more without vendor lock-in. This AI-agnostic approach enables businesses to maintain control, enhance flexibility and optimize costs, regardless of where models are hosted.
+
+Model Gateway is the final pillar in watsonx.ai’s multi-model strategy, giving customers the ultimate choice in using third-party hosted models on platform. Users can leverage third-party models to develop agents using any OOTB templates, and quickly deploy them as AI services.
+
+For this lab, we have created an account on IBM Cloud so you can use Granite 4 hosted on watsonx.ai on IBM Cloud. With the model gatewat, you can securely access and interact with foundation models from multiple providers like AWS, Anthropic, Azure.. with **openai** compatible REST API. Providers are registered on the gateway, then you can import models for each provider and decide which model will be visible for users based on IAM access management. You will be provided an api key by the instuctors that only has access to this gateway and models.
+
+![model gateway text](./images/model-gateway.png)
+
+
+## **4. Optional: Set Up Ollama**
+
+> We do not recommand to setup ollama locally unless you know your computer can handle it. You also need to have a performant network to download the models. Micro model is about ~8Gb and H-Tiny is about ~15Gb. 
+
+Using the models locally will show you that Granite 4 are small but performant!
 
 Go to [ollama.com](https://ollama.com/) and hit Download!
 
@@ -93,16 +110,6 @@ Pull the Granite 3.2 vision model for the vision model for both labs (not needed
 ```
 ollama pull granite3.2-vision:2b
 ```
-
-## **4. watsonx.ai Model Gateway feature**
-
-> With [Model Gateway](https://www.ibm.com/docs/en/watsonx/saas?topic=models-model-gateway-preview), organizations can integrate IBM’s Granite models alongside industry-leading foundation models from OpenAI, Anthropic, NVIDIA, Cerebras and more without vendor lock-in. This AI-agnostic approach enables businesses to maintain control, enhance flexibility and optimize costs, regardless of where models are hosted.
-
-Model Gateway is the final pillar in watsonx.ai’s multi-model strategy, giving customers the ultimate choice in using third-party hosted models on platform. Users can leverage third-party models to develop agents using any OOTB templates, and quickly deploy them as AI services.
-
-For this lab, we have created an account on IBM Cloud so you can use Granite 4 hosted on watsonx.ai on IBM Cloud. With the model gatewat, you can securely access and interact with foundation models from multiple providers like AWS, Anthropic, Azure.. with **openai** compatible REST API. Providers are registered on the gateway, then you can import models for each provider and decide which model will be visible for users based on IAM access management. You will be provided an api key by the instuctors that only has access to this gateway and models.
-
-![model gateway text](./images/model-gateway.png)
 
 ### Test the model gateway with Granite 4 H Small
 
