@@ -87,9 +87,7 @@ Expected Output:
 class Pipe:
     class Valves(BaseModel):
         TASK_MODEL_ID: str = Field(default="ollama/ibm/granite4:tiny-h")
-        VISION_MODEL_ID: str = Field(
-            default="ollama/granite3.2-vision:2b"
-        )
+        VISION_MODEL_ID: str = Field(default="ollama/granite3.2-vision:2b")
         OPENAI_API_URL: str = Field(default=open_webui_config.OLLAMA_BASE_URL or "http://localhost:11434")
         OPENAI_API_KEY: str = Field(default="ollama")
         VISION_API_URL: str = Field(default=open_webui_config.OLLAMA_BASE_URL or "http://localhost:11434")
@@ -211,6 +209,7 @@ class Pipe:
             base_url=base_url,
             api_key=api_key,
             temperature=model_temp,
+            stop=["↵↵↵↵"]
         )
 
         ##################

@@ -76,7 +76,7 @@ The following architecture diagram illustrates how the Granite Retrieval Agent i
 
 3. Have a look to the **Pipe** class definition and variables. Those are variables that you will be able to set values in Open WebUI directly and allow you the input your api key or change model name.
   Default is setup for **ollama** as follow:
-  ```
+  ```py
   class Pipe:
       class Valves(BaseModel):
           TASK_MODEL_ID: str = Field(default="ibm/granite4:latest")
@@ -89,7 +89,7 @@ The following architecture diagram illustrates how the Granite Retrieval Agent i
   ```
 
   If you want to use **watsonx.ai** rather than ollam, change the values to:
-  ```
+  ```py
   class Pipe:
       class Valves(BaseModel):
           TASK_MODEL_ID: str = Field(default="ibm/granite-4-h-small")
@@ -104,7 +104,7 @@ The following architecture diagram illustrates how the Granite Retrieval Agent i
 4. Review class definition for `Plan`, `CriticDecision`, `Step` and `SearchQueries`. Those classes define the output format of each agent in our architecture.
 
 5. Edit the `base_llm_config` object. The default for **ollama** is:
-  ```
+  ```py
           base_llm_config = {
               "model": default_model,
               "client_host": base_url,
@@ -114,7 +114,7 @@ The following architecture diagram illustrates how the Granite Retrieval Agent i
           }
   ```
   Change it if needed for **watsonx.ai** to:
-  ```
+  ```py
           base_llm_config = {           
               "model": default_model,
               "base_url": base_url,
@@ -125,7 +125,7 @@ The following architecture diagram illustrates how the Granite Retrieval Agent i
   ```
 
 6. Review the `llm_configs` object (same for ollama and watsonx.ai):
-  ```
+  ```py
           llm_configs = {
               "ollama_llm_config": {**base_llm_config, "config_list": [{**base_llm_config}]},
               "planner_llm_config": {**base_llm_config, "config_list": [{**base_llm_config, "response_format": Plan}]},
@@ -146,7 +146,7 @@ The following architecture diagram illustrates how the Granite Retrieval Agent i
   Each agent will use the base llm for its execution, but each one has a different format for the output, as per the class defined in step 4.
 
 7. In the next section of the file, we will define our agents. See how llm configuration and prompt are associated for each one. Each agent is of type [autogen.ConversableAgent](https://docs.ag2.ai/latest/docs/api-reference/autogen/ConversableAgent/)
-  ```
+  ```py
   ### Agents
           # Generic LLM completion, used for servicing Open WebUI originated requests
           generic_assistant = ConversableAgent(
@@ -172,7 +172,7 @@ The following architecture diagram illustrates how the Granite Retrieval Agent i
   ```
 
 8. Next, review the `Tool Definitions` section, for example:
-    ```
+    ```py
         @assistant.register_for_llm(
                 name="personal_knowledge_search",
                 description="Searches personal documents according to a given query",
@@ -208,17 +208,17 @@ Review this short video as an example execution.
    * `granite_autogen_rag.py` (Retrieval Agent) 
 5. **Save** and **Confirm** the import
 6. **Enable** the function by clicking the toggle button
-7. Adjust settings by clicking the **wheel**  icon:
+7. Adjust settings by clicking the **wheel** ⚙️ icon:
 
-| Parameter         | Description                               | Default Value                                                                  |
-| ----------------- | ----------------------------------------- | ------------------------------------------------------------------------------ |
-| task_model_id     | Primary model for task execution          | `ibm/granite4:latest` or `ibm/granite-4-h-small`                        |
-| vision_model_id   | Vision model for image analysis           | `granite3.2-vision:2b` or `meta-llama/llama-3-2-11b-vision-instruct`    |
-| openai_api_url    | API endpoint for OpenAI-style model calls | `http://localhost:11434` or `https://ca-tor.ml.cloud.ibm.com/ml/gateway/v1`    |
-| openai_api_key    | API key for authentication                | `ollama` or IBM cloud api key                                                  |
-| vision_api_url    | Endpoint for vision-related tasks         | `http://localhost:11434/v1` or `https://ca-tor.ml.cloud.ibm.com/ml/gateway/v1` | 
-| model_temperature | Controls response randomness              | `0`                                                                            |
-| max_plan_steps    | Maximum steps in agent planning           | `6`                                                                            |
+    | Parameter         | Description                               | Default Value                                                                  |
+    | ----------------- | ----------------------------------------- | ------------------------------------------------------------------------------ |
+    | task_model_id     | Primary model for task execution          | `ibm/granite4:latest` or `ibm/granite-4-h-small`                               |
+    | vision_model_id   | Vision model for image analysis           | `granite3.2-vision:2b` or `meta-llama/llama-3-2-11b-vision-instruct`           |
+    | openai_api_url    | API endpoint for OpenAI-style model calls | `http://localhost:11434` or `https://ca-tor.ml.cloud.ibm.com/ml/gateway/v1`    |
+    | openai_api_key    | API key for authentication                | `ollama` or IBM cloud api key                                                  |
+    | vision_api_url    | Endpoint for vision-related tasks         | `http://localhost:11434/v1` or `https://ca-tor.ml.cloud.ibm.com/ml/gateway/v1` | 
+    | model_temperature | Controls response randomness              | `0`                                                                            |
+    | max_plan_steps    | Maximum steps in agent planning           | `6`                                                                            |
 
   Ensure all settings are ok.
   
