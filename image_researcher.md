@@ -134,30 +134,35 @@ Remove the block
 ```
 And udpdate with:
 ```py
-        image_descriptions = ""
-        if image_urls:
-            messages = [
+            image_descriptions = ""
+            if image_urls:
+              messages =  [
                 {
                     "role": "user",
-                    "content": image_query,
-                    "images": image_urls
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": image_query
+                        },
+                        image_info[0]
+                    ] 
                 }
-            ]
+             ]
 
-            # Use openai
-            vision_llm = LLM(
-              model=vision_model,
-              base_url=base_url,
-              api_type="openai",
-              api_key=api_key,
-              max_tokens=2000,
-              temperature=0.7,
-              stop=["↵↵↵↵"]           
-              
-          )
+                # Use openai
+              vision_llm = LLM(
+                model=vision_model,
+                base_url=base_url,
+                api_type="openai",
+                api_key=api_key,
+                max_tokens=2000,
+                temperature=0.7,
+                stop=["↵↵↵↵"]           
+                
+              )
 
-          response = vision_llm.call(messages)
-          image_descriptions = response
+            response = vision_llm.call(messages)
+            image_descriptions = response
 ```
 
 
@@ -381,6 +386,14 @@ Finally, summarize the findings into a comprehensive report:
 Break down the image into components and provide more information on each concept.
 ``` 
 
+![image researcher query](images/image-res-1.png)
+
+
 The first step of the agent's process is describing the image, and then breaking that down into individual items to be researched. Below is the output of the agent, which, when deployed in OpenWebUI, can be seen in the Open WebUI server logs.
-  
+
+Crew working:
+
+![image identifier](images/image-res-2.png)
+ 
+ 
 
