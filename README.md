@@ -90,13 +90,24 @@ For this lab, we have created an account on IBM Cloud so you can use Granite 4 h
 
 Before using it in the lab, double check that it is working fine and that the provided api key is working.
 
-Export your key:
+1. Export your key:
 
 ```
 export IBM_CLOUD_APIKEY="xxxxxxxx"
 ```
 
-Then run this openai curl command to see Granite 4 H Small in action with function calling:
+2. List the providers & models that are available for the given api key:
+
+```bash
+curl -sS "https://ca-tor.ml.cloud.ibm.com/ml/gateway/v1/providers/search" \
+	-H "Content-Type: application/json" \
+	-H "Authorization: Bearer ${IBM_CLOUD_APIKEY}"
+```
+
+![gateway models](images/gateway_models.png)
+
+
+3. Then run this openai curl command to see Granite 4 H Small in action with function calling:
 
 ```
 curl --location 'https://ca-tor.ml.cloud.ibm.com/ml/gateway/v1/chat/completions' \
