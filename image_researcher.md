@@ -395,5 +395,7 @@ Crew working:
 
 ![image identifier](images/image-res-2.png)
  
- 
+ Final result:
+
+ ![summary](images/image-res-3.png)
 
