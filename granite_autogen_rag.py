@@ -216,7 +216,7 @@ class Pipe:
         VISION_MODEL_ID: str = Field(default="granite3.2-vision:2b")
         OPENAI_API_URL: str = Field(default="http://localhost:11434")
         OPENAI_API_KEY: str = Field(default="ollama")
-        VISION_API_URL: str = Field(default="http://localhost:11434/v1")
+        VISION_API_URL: str = Field(default="http://localhost:11434")
         MODEL_TEMPERATURE: float = Field(default=0)
         MAX_PLAN_STEPS: int = Field(default=6)
 
@@ -320,7 +320,6 @@ class Pipe:
             "client_host": base_url,
             "api_type": "ollama",
             "temperature": model_temp,
-            "num_ctx": 131072,
         }
 
         llm_configs = {
@@ -459,7 +458,7 @@ class Pipe:
                 results = retrieval.search_web(
                     self.owui_request,
                     self.owui_request.app.state.config.WEB_SEARCH_ENGINE,
-                    search_instruction,
+                    query,
                 )
                 for result in results:
                     search_results.append({"Title": result.title, "URL": result.link, "Text": result.snippet})
