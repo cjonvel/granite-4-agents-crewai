@@ -75,13 +75,13 @@ To test the successful installation, open your browser on [http://localhost:8080
 
 ## **3. LLMs call: use watsonx.ai Model Gateway**
 
-Today we will use Granite 4 on IBM Cloud to run the labs, as we will share with you a temporary access to the model (shared api key only available for the current day). However, the default implementation of the lab is to use ollama to run the models locally so you can run on it later on without external dependencies. 
+Today we will use Granite 4 on IBM Cloud to run the labs, as we will share with you a temporary access to the model (shared api key only available for the current day). However, the default implementation of the lab is to use ollama, in order to allow you to rerun this lab by running models locally (no external dependencies for inference). 
 
 > With [Model Gateway](https://www.ibm.com/docs/en/watsonx/saas?topic=models-model-gateway-preview), organizations can integrate IBM’s Granite models alongside industry-leading foundation models from OpenAI, Anthropic, NVIDIA, Cerebras and more without vendor lock-in. This AI-agnostic approach enables businesses to maintain control, enhance flexibility and optimize costs, regardless of where models are hosted.
 
 Model Gateway is the final pillar in watsonx.ai’s multi-model strategy, giving customers the ultimate choice in using third-party hosted models on platform. Users can leverage third-party models to develop agents using any OOTB templates, and quickly deploy them as AI services.
 
-For this lab, we have created an account on IBM Cloud so you can use Granite 4 hosted on watsonx.ai on IBM Cloud. With the model gatewat, you can securely access and interact with foundation models from multiple providers like AWS, Anthropic, Azure.. with **openai** compatible REST API. Providers are registered on the gateway, then you can import models for each provider and decide which model will be visible for users based on IAM access management. You will be provided an api key by the instuctors that only has access to this gateway and models.
+For this lab, we have created an account on IBM Cloud so you can use Granite 4 hosted on watsonx.ai on IBM Cloud. With the model gateway, you can securely access and interact with foundation models from multiple providers like AWS, Anthropic, Azure.. with **openai** compatible REST API. Providers are registered on the gateway, then you can import models for each provider and decide which model will be visible for the users based on IAM access management. You will be provided an api key by the instuctors that only has access to this gateway and models.
 
 ![model gateway text](./images/model-gateway.png)
 
