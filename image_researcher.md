@@ -312,7 +312,7 @@ Use the “Identifier Crew” to create a structured Python object representing 
         await identifier_crew.kickoff_async(inputs)
 ```
 
-Then, use an asynchronous, parallel kickoff of the “Research Crew” to perform retrieval for each research query:
+Then, use an asynchronous, parallel kickoff of the “Research Crew” to perform retrieval for each research query if valve `Run Parallel Tasks` has been activated (deactivated by default for local ollama execution):
 
 ```py
         outputs = []
