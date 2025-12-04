@@ -12,7 +12,7 @@ Here are the technologies/frameworks we will use for development and execution:
 - python as programming language
 - [CrewAI](https://www.crewai.com/?utm_source=ibm_developer&utm_content=in_content_link&utm_id=tutorials_awb-build-agentic-rag-system-granite) as one of the agentic framework. CrewAI emphasizes role-based collaboration with a workplace-inspired metaphor. Each agent has a defined role, responsibilities, and access to tools, making the system intuitive for team-based workflows. 
 - [AutoGen](https://microsoft.github.io/autogen/stable//index.html) as another agentic framework, AutoGen focuses on conversational agent architecture, emphasizing natural language interactions and dynamic role-playing
-- [Open WebUI](https://docs.openwebui.com/category/-web-search?utm_source=ibm_developer&utm_content=in_content_link&utm_id=tutorials_awb-build-agentic-rag-system-granite) as a local workbench to load and chat with the agents
+- [Open WebUI](https://docs.openwebui.com/) as a local workbench to load and chat with the agents
 - **optional** use [Ollama](https://ollama.com/) locally to run the small and powerful Granite 4 H Tiny model!
 - **optional** use a Web Search engine in Open WebUI, thanks to Open WebUI you can configure the engine of your choice (Tavily, SearXNG... )
 - **Granite 4** and llama vision models running on watsonx.ai on IBM cloud
