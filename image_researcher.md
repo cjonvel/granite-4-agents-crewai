@@ -1,4 +1,3 @@
-
 ## **Image Research Agent**
 
 The **Image Research Agent** analyzes images and performs multi-agent research on image components using **Granite 4** with the **CrewAI** framework.
@@ -19,13 +18,13 @@ They say a picture is worth a thousand words, but what if AI could turn those wo
 
 This Image Research Agent supports these use cases:
 
-  - Architecture Diagrams: Understand components, protocols, and system relationships.
+- Architecture Diagrams: Understand components, protocols, and system relationships.
 
-  - Business Dashboards: Explain KPIs, metrics, and trends in BI tools.
+- Business Dashboards: Explain KPIs, metrics, and trends in BI tools.
 
-  - Artwork and Historical Photos: Analyze artistic styles, historical context, and related works.
+- Artwork and Historical Photos: Analyze artistic styles, historical context, and related works.
 
-  - Scientific Visualizations: Interpret complex charts, lab results, or datasets.
+- Scientific Visualizations: Interpret complex charts, lab results, or datasets.
 
 By combining vision models, agentic workflows, and RAG-based research, this solution empowers users to transform visual data into meaningful insights. The result? Informed decision-making, deeper learning, and enhanced understanding across industries.
 
@@ -33,42 +32,37 @@ By combining vision models, agentic workflows, and RAG-based research, this solu
 
 ![alt text](docs/images/image_explainer_agent.png)
 
-
 ### **Image Researcher in Action:**
 
 ![alt-text](docs/images/image_explainer_example_1.png)
 
 ### 🔹 Key Features:
 
-* **Image-based multi-agent research** using CrewAI.
-* **Granite 4 Tiny-H** powers low-latency orchestration and tool calls; pair with a vision backend of your choice.
-* Identifies objects, retrieves related research articles, and provides historical backgrounds.
-* Demonstrates a **different agentic workflow** from the Retrieval Agent.
-
-
+- **Image-based multi-agent research** using CrewAI.
+- **Granite 4 Tiny-H** powers low-latency orchestration and tool calls; pair with a vision backend of your choice.
+- Identifies objects, retrieves related research articles, and provides historical backgrounds.
+- Demonstrates a **different agentic workflow** from the Retrieval Agent.
 
 ## Environment setup
 
 The environment has been setup as per the readme instructions.
 
-
-
 ## **Develop the agent**
-
 
 ### Step 1. Set up connections to the two LLMs
 
-CrewAI uses **LiteLLM** to connect to a wide variety of Language Models (LLMs). This integration provides extensive versatility, allowing you to use models from numerous providers with a simple, unified interface. 
+CrewAI uses **LiteLLM** to connect to a wide variety of Language Models (LLMs). This integration provides extensive versatility, allowing you to use models from numerous providers with a simple, unified interface.
 
 First, we need to set up connections to the two LLMs we will be using:
 
-  -  **Llama 3.2 11b Vision Instruct** (or Granite 3.2 vision locally with ollama) Vision LLM for transforming images into descriptive text
+- **Llama 3.2 11b Vision Instruct** (or Granite 3.2 vision locally with ollama) Vision LLM for transforming images into descriptive text
 
-  -  **Granite 4.0 H Small** (or Granite 4.0 h Tiny locally with ollama) for all other language-related tasks including planning and reasoning.
+- **Granite 4.0 H Small** (or Granite 4.0 h Tiny locally with ollama) for all other language-related tasks including planning and reasoning.
 
 Open [image_researcher_granite_crewai.py](image_researcher_granite_crewai.py) in your favorite IDE.
 
 Change the default parameters of the agent to use watsonx.ai model through openai compatible API, from:
+
 ```py
 class Pipe:
     class Valves(BaseModel):
@@ -78,7 +72,9 @@ class Pipe:
         OPENAI_API_KEY: str = Field(default="ollama")
         VISION_API_URL: str = Field(default=open_webui_config.OLLAMA_BASE_URL or "http://localhost:11434")
 ```
+
 to:
+
 ```py
 class Pipe:
     class Valves(BaseModel):
@@ -104,7 +100,8 @@ Now, update the base llm configuration and add a attribute to switch from ollama
 
 Update the instructions for the vision model, in the file local ollama syntax is used, you need to switch to openai instructions
 
-Remove the block 
+Remove the block
+
 ```py
         image_descriptions = ""
         if image_urls:
@@ -132,7 +129,9 @@ Remove the block
             )
             image_descriptions = ollama_output['message']['content']
 ```
+
 And udpdate with:
+
 ```py
             image_descriptions = ""
             if image_urls:
@@ -145,7 +144,7 @@ And udpdate with:
                             "text": image_query
                         },
                         image_info[0]
-                    ] 
+                    ]
                 }
              ]
 
@@ -157,17 +156,15 @@ And udpdate with:
                 api_key=api_key,
                 max_tokens=2000,
                 temperature=0.7,
-                stop=["↵↵↵↵"]           
-                
+                stop=["↵↵↵↵"]
+
               )
 
             response = vision_llm.call(messages)
             image_descriptions = response
 ```
 
-
 ### Step 2. Tools definition
-
 
 Have a look to the tools section on how the Web Search and Knowledge are defined:
 
@@ -178,10 +175,10 @@ Have a look to the tools section on how the Web Search and Knowledge are defined
         ##################
         @tool("WebSearch")
         def do_web_search(query: str) -> str:
-            """Use this to search the internet. 
+            """Use this to search the internet.
 
-            Provide a **search engine–optimized query string** as the parameter. 
-            Your goal is to generate a single, well-structured query that could be directly entered into a search engine (e.g., Google, Bing) to retrieve the most relevant results. 
+            Provide a **search engine–optimized query string** as the parameter.
+            Your goal is to generate a single, well-structured query that could be directly entered into a search engine (e.g., Google, Bing) to retrieve the most relevant results.
 
             ✅ **How to construct the query**:
             - Identify the **core topic** or entity (e.g., product, technology, event, person, regulation).
@@ -199,20 +196,18 @@ Have a look to the tools section on how the Web Search and Knowledge are defined
                 return "Please provide a search query."
 ```
 
-
 ### Step 3. Define the Research Item Identifier agent
 
 This agent analyzes the image description and user query to identify key features and concepts requiring research.
 
 Inputs:
 
-  - Image description generated by the Image Explainer.
-    User's research goal or context.
+- Image description generated by the Image Explainer.
+  User's research goal or context.
 
 Outputs:
 
-  - Structured list of items for further research.
-
+- Structured list of items for further research.
 
 We are using a crew that consists of a single task and a single agent. The output_pydantic=ResearchItems portion instructs the LLM to output its structure into a Python object that can be directly leveraged in the next step of the plan.
 
@@ -252,12 +247,11 @@ For each identified research item, a separate Research agent runs asynchronously
 
 Inputs:
 
-  - List of research items from the Research Item Identifier.
+- List of research items from the Research Item Identifier.
 
 Outputs:
 
-  - Detailed information, including references and explanations, for each item.
-
+- Detailed information, including references and explanations, for each item.
 
 ```py
         # Research Crew
@@ -301,6 +295,7 @@ Make a call to the Granite Vision model to describe the image:
             if chat_history_text:
                 image_query += f"\n\nAlso use the previous chat history to further guide you: {chat_history_text}"
 ```
+
 ```py
           response = vision_llm.call(messages)
           image_descriptions = response
@@ -332,8 +327,8 @@ Finally, summarize the findings into a comprehensive report:
 ```py
         # Create the final report
         await self.emit_event_safe("Summing up findings...")
-        prompt = f"""Thoroughly answer the user's question, providing links to all URLs and documents used in your response. You may only use the following information to answer the question. 
-        If no reference URLs exist, do not fabricate them. If the following information does not have all the information you need to answer all aspects of the user question, then you may highlight those aspects. 
+        prompt = f"""Thoroughly answer the user's question, providing links to all URLs and documents used in your response. You may only use the following information to answer the question.
+        If no reference URLs exist, do not fabricate them. If the following information does not have all the information you need to answer all aspects of the user question, then you may highlight those aspects.
         User query: {DEFAULT_INSTRUCTION} \n\n Image description:  {image_descriptions} \n\n Gathered information: {outputs}"""
         final_output =  await anyio.to_thread.run_sync(lambda: llm.call(prompt))
         return final_output
@@ -341,61 +336,55 @@ Finally, summarize the findings into a comprehensive report:
 
 ## Run the agent: Analyzing a sample image
 
-
 ### **1. Import the Agent Python Script into Open WebUI**
 
 1. Open `http://localhost:8080/` and log into Open WebUI.
 2. Admin panel → **Functions** → **+ New Function** to add.
 3. Name it `Image Researcher Agent` and add a description to your function, eg "This agent analyzes a image description and make a web search on identifed key features and concepts"
 4. Paste the relevant Python script:
-   * `image_researcher_granite_crewai.py` (Retrieval Agent) 
+   - `image_researcher_granite_crewai.py` (Retrieval Agent)
 5. **Save** and **Confirm** the import
 6. **Enable** the function by clicking the toggle button
-7. Adjust settings by clicking the **wheel** ⚙️ icon:
+7. Adjust function settings by clicking the **wheel** ⚙️ icon next to the function name:
 
-
-    | Parameter                | Description                               | Default Value                                     |
-    | ------------------------ | ----------------------------------------- | ------------------------------------------------- |
-    | task_model_id            | Primary model for task execution          | `openai/ibm/granite-4-h-small`                    |
-    | vision_model_id          | Vision model for image analysis           | `openai/meta-llama/llama-3-2-11b-vision-instruct` |
-    | openai_api_url           | API endpoint for OpenAI-style model calls | `https://ca-tor.ml.cloud.ibm.com/ml/gateway/v1`   |
-    | openai_api_key           | API key for authentication                | your IBM Cloud api key                            |
-    | vision_api_url           | Endpoint for vision-related tasks         | `https://ca-tor.ml.cloud.ibm.com/ml/gateway/v1`   |
-    | model_temperature        | Controls response randomness              | `0`                                               |
-    | max_research_categories  | Number of categories to research          | `4`                                               |
-    | max_research_iterations  | Iterations for refining research results  | `6`                                               |
-    | include_knowledge_search | Option to include knowledge base search   | `False`                                           |
-    | run_parallel_tasks       | Run tasks concurrently                    | `False`                                           |
-
+   | Parameter                | Description                               | Default Value                                     |
+   | ------------------------ | ----------------------------------------- | ------------------------------------------------- |
+   | task_model_id            | Primary model for task execution          | `openai/ibm/granite-4-h-small`                    |
+   | vision_model_id          | Vision model for image analysis           | `openai/meta-llama/llama-3-2-11b-vision-instruct` |
+   | openai_api_url           | API endpoint for OpenAI-style model calls | `https://ca-tor.ml.cloud.ibm.com/ml/gateway/v1`   |
+   | openai_api_key           | API key for authentication                | your IBM Cloud api key                            |
+   | vision_api_url           | Endpoint for vision-related tasks         | `https://ca-tor.ml.cloud.ibm.com/ml/gateway/v1`   |
+   | model_temperature        | Controls response randomness              | `0`                                               |
+   | max_research_categories  | Number of categories to research          | `4`                                               |
+   | max_research_iterations  | Iterations for refining research results  | `6`                                               |
+   | include_knowledge_search | Option to include knowledge base search   | `False`                                           |
+   | run_parallel_tasks       | Run tasks concurrently                    | `False`                                           |
 
 ⚠️ If you see OpenTelemetry errors while importing `image_researcher_granite_crewai.py`, see [this issue](https://github.com/ibm-granite-community/granite-retrieval-agent/issues/25).
 
-
 ### **2. Run the agent in Open WebUI**
 
- As an example, you can use a technical schema so you can learn more information on each block! Take any schema you want to know more about, as an example you can use the Granite 4 H Tiny architecture to better understand what's is all about!
+As an example, you can use a technical schema so you can learn more information on each block! Take any schema you want to know more about, as an example you can use the Granite 4 H Tiny architecture to better understand what's is all about!
 
 ![alt text](images/granite-tiny-architecture.png)
 
-
-1. In Open WebUI, navigate to the home page. 
+1. In Open WebUI, navigate to the home page.
 2. Select your `Image Researcher Agent` in the list.
-3. Upload an image with the `Upload files` menu 
+3. Upload an image with the `Upload files` menu
 4. Type your query
+
 ```text
 Break down the image into components and provide more information on each concept.
-``` 
+```
 
 ![image researcher query](images/image-res-1.png)
-
 
 The first step of the agent's process is describing the image, and then breaking that down into individual items to be researched. Below is the output of the agent, which, when deployed in OpenWebUI, can be seen in the Open WebUI server logs.
 
 Crew working:
 
 ![image identifier](images/image-res-2.png)
- 
- Final result:
 
- ![summary](images/image-res-3.png)
+Final result:
 
+![summary](images/image-res-3.png)

@@ -210,7 +210,7 @@ Review this short video as an example execution.
    - `granite_autogen_rag.py` (Retrieval Agent)
 5. **Save** and **Confirm** the import
 6. **Enable** the function by clicking the toggle button
-7. Adjust settings by clicking the **wheel** ⚙️ icon:
+7. Adjust function settings by clicking the **wheel** ⚙️ icon next to the function name:
 
    | Parameter         | Description                               | Default Value                                                               |
    | ----------------- | ----------------------------------------- | --------------------------------------------------------------------------- |

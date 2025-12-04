@@ -10,7 +10,7 @@ During this lab we will develop 2 agents that are using IBM Granite 4 to plan an
 Here are the technologies/frameworks we will use for development and execution:
 
 - python as programming language
-- [CrewAI](https://www.crewai.com/?utm_source=ibm_developer&utm_content=in_content_link&utm_id=tutorials_awb-build-agentic-rag-system-granite) as one of the agentic framework. CrewAI emphasizes role-based collaboration with a workplace-inspired metaphor. Each agent has a defined role, responsibilities, and access to tools, making the system intuitive for team-based workflows. 
+- [CrewAI](https://www.crewai.com/?utm_source=ibm_developer&utm_content=in_content_link&utm_id=tutorials_awb-build-agentic-rag-system-granite) as one of the agentic framework. CrewAI emphasizes role-based collaboration with a workplace-inspired metaphor. Each agent has a defined role, responsibilities, and access to tools, making the system intuitive for team-based workflows.
 - [AutoGen](https://microsoft.github.io/autogen/stable//index.html) as another agentic framework, AutoGen focuses on conversational agent architecture, emphasizing natural language interactions and dynamic role-playing
 - [Open WebUI](https://docs.openwebui.com/) as a local workbench to load and chat with the agents
 - **optional** use [Ollama](https://ollama.com/) locally to run the small and powerful Granite 4 H Tiny model!
@@ -56,26 +56,25 @@ source /path/to/new/virtual/environment/bin/activate
 If you have a different python version, either update it or manage multiple python versions with [uv](https://docs.astral.sh/uv/concepts/python-versions/#python-version-files) or pyenv.
 
 ```
+pip install uv
 uv venv --python 3.11.6
+source .venv/bin/activate (for mac/linux)
+source .venv/Scripts/activate (for windows)
 ```
-
-You
 
 ## **2. Install Open WebUI**
 
 ```bash
-pip install open-webui
+pip install open-webui OR uv pip install open-webui
 open-webui serve
 ```
 
 To test the successful installation, open your browser on [http://localhost:8080]. When first connecting, you will be asked to enter your name, eventually change email and password then click **Create Admin Account** button.
 ![login](images/openwebui-login.png)
 
-
-
 ## **3. LLMs call: use watsonx.ai Model Gateway**
 
-Today we will use Granite 4 on IBM Cloud to run the labs, as we will share with you a temporary access to the model (shared api key only available for the current day). However, the default implementation of the lab is to use ollama, in order to allow you to rerun this lab by running models locally (no external dependencies for inference). 
+Today we will use Granite 4 on IBM Cloud to run the labs, as we will share with you a temporary access to the model (shared api key only available for the current day). However, the default implementation of the lab is to use ollama, in order to allow you to rerun this lab by running models locally (no external dependencies for inference).
 
 > With [Model Gateway](https://www.ibm.com/docs/en/watsonx/saas?topic=models-model-gateway-preview), organizations can integrate IBM’s Granite models alongside industry-leading foundation models from OpenAI, Anthropic, NVIDIA, Cerebras and more without vendor lock-in. This AI-agnostic approach enables businesses to maintain control, enhance flexibility and optimize costs, regardless of where models are hosted.
 
@@ -84,7 +83,6 @@ Model Gateway is the final pillar in watsonx.ai’s multi-model strategy, giving
 For this lab, we have created an account on IBM Cloud so you can use Granite 4 hosted on watsonx.ai on IBM Cloud. With the model gateway, you can securely access and interact with foundation models from multiple providers like AWS, Anthropic, Azure.. with **openai** compatible REST API. Providers are registered on the gateway, then you can import models for each provider and decide which model will be visible for the users based on IAM access management. You will be provided an api key by the instuctors that only has access to this gateway and models.
 
 ![model gateway text](./images/model-gateway.png)
-
 
 ### **Test the model gateway with Granite 4 H Small**
 
@@ -105,7 +103,6 @@ curl -sS "https://ca-tor.ml.cloud.ibm.com/ml/gateway/v1/providers/search" \
 ```
 
 ![gateway models](images/gateway_models.png)
-
 
 3. Then run this openai curl command to see Granite 4 H Small in action with function calling:
 
@@ -252,11 +249,9 @@ curl --location 'https://ca-tor.ml.cloud.ibm.com/ml/gateway/v1/chat/completions'
 }'
 ```
 
-
-
 ## **4. Optional: Set Up Ollama**
 
-> We do not recommand to setup ollama locally unless you know your computer can handle it. You also need to have a performant network to download the models. Micro model is about ~8Gb and H-Tiny is about ~15Gb. 
+> We do not recommand to setup ollama locally unless you know your computer can handle it. You also need to have a performant network to download the models. Micro model is about ~8Gb and H-Tiny is about ~15Gb.
 
 Using the models locally will show you that Granite 4 are small but performant!
 
@@ -279,7 +274,6 @@ Pull the Granite 3.2 vision model for the vision model for both labs (not needed
 ```
 ollama pull granite3.2-vision:2b
 ```
-
 
 ## **5. Optional: Set Up Web Search in Open WebUI**
 
